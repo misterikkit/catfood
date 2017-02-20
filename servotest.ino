@@ -3,8 +3,8 @@ const int switchPin = 11;
 const int servoPin = 10;
 
 /*
-   Driving the servo needed a separate voltage regulator from 
-   the arduino. Using an adjustable LM317T regulator, I connected 
+   Driving the servo needed a separate voltage regulator from
+   the arduino. Using an adjustable LM317T regulator, I connected
    a basic circuit with no capacitors.
    R1=1K
    R2=2.18K (nominal 2.2K)
@@ -50,28 +50,41 @@ void Advance(int n) {
   }
 }
 
+void Dispense() {
+  if (Serial) {
+    Serial.println("Dispensing product");
+  }
+  Advance(3);
+}
+
+void DelayUntil(unsigned long deadline) {
+  Serial.print("Sleeping until ");
+  Serial.println(deadline, DEC);
+  const unsigned long now = millis();
+  Serial.print("Sleeping for ");
+  Serial.println((deadline - now), DEC);
+  delay(deadline - now);
+}
+
+unsigned long nextRunMillis;
+
 void setup() {
   pinMode(switchPin, INPUT_PULLUP);
   pinMode(servoPin, OUTPUT);
 
-  setupDbg();
-  StartupAnimation();
+  nextRunMillis = millis() + 2000;
 
-  /*
-    Serial.begin(115200);
-    if (Serial) {
-      Serial.write("\nSetup done\n");
-    }
-  */
+  Serial.begin(9600);
+  if (Serial) {
+    Serial.println("Setup done");
+  }
 }
 
+#define HOUR (1000UL * 60UL * 60UL)
+
 void loop() {
-  // When switch is closed, advance 3 times.
-  if (!digitalRead(switchPin)) {
-    Advance(3);
-    debug(0x1);
-    // Wait for switch to open. (It's fairly bouncy anyway, so whatever.)
-    while (!digitalRead(switchPin)) {}
-  }
+  DelayUntil(nextRunMillis);
+  Dispense();
+  nextRunMillis += HOUR;
 }
 
