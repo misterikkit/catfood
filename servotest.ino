@@ -2,6 +2,15 @@
 const int switchPin = 11;
 const int servoPin = 10;
 
+/*
+   Driving the servo needed a separate voltage regulator from 
+   the arduino. Using an adjustable LM317T regulator, I connected 
+   a basic circuit with no capacitors.
+   R1=1K
+   R2=2.18K (nominal 2.2K)
+   The math doesn't check out, but the voltage does.
+*/
+
 // Bang my own bits to satisfy the requirements of the Parallax servo I have.
 // https://www.parallax.com/sites/default/files/downloads/900-00008-Continuous-Rotation-Servo-Documentation-v2.2.pdf
 // pin - digital pin to drive
@@ -45,10 +54,15 @@ void setup() {
   pinMode(switchPin, INPUT_PULLUP);
   pinMode(servoPin, OUTPUT);
 
-  Serial.begin(115200);
-  Serial.write("\nSetting up\n");
   setupDbg();
   StartupAnimation();
+
+  /*
+    Serial.begin(115200);
+    if (Serial) {
+      Serial.write("\nSetup done\n");
+    }
+  */
 }
 
 void loop() {

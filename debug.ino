@@ -4,7 +4,11 @@ const int dbgPins[] = {2, 3, 4, 5, 6, 7, 8, 9};
 #define WRITEPIN(p) (digitalWrite(dbgPins[p], (val & (1 << p)) ? HIGH : LOW))
 
 void debug(int val) {
-  Serial.write(val);
+  /*
+  if (Serial) {
+    Serial.write(val);
+  }
+  */
   WRITEPIN(0);
   WRITEPIN(1);
   WRITEPIN(2);
