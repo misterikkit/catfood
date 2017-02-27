@@ -1,0 +1,24 @@
+{
+  "name": "catfood",
+  "version": "1.0.0",
+  "description": "IOT catfood automated dispenser",
+  "main": "cloud.js",
+  "dependencies": {
+    "rpio": "^0.9.15",
+    "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misterikkit/catfood.git"
+  },
+  "author": "misterikkit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/misterikkit/catfood/issues"
+  },
+  "homepage": "https://github.com/misterikkit/catfood#readme"
+}
