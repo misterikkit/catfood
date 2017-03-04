@@ -1,7 +1,11 @@
-var io = require('socket.io-client');
-var rpio = require('rpio');
+const io = require('socket.io-client');
+const rpio = require('rpio');
+const spawn = require('child_process').spawn;
+
 
 function setup() {
+  // Subprocess to set PWM mark:space mode because it isn't in the API.
+  const setms = spawn('gpio', ['pwm-ms']);
   rpio.open(12, rpio.PWM);
   // divide 19.2Mhz by 128 (150kHz)
   rpio.pwmSetClockDivider(128);
@@ -36,17 +40,8 @@ function listen(cb) {
 
   socket.on('control', function(msg) {
     console.log('control: ' + msg);
-    switch (msg) {
-    case "forward":
-      forward();
-      break;
-    case "reverse":
-      reverse();
-      break;
-    case "stop":
-      stop();
-      break;
-    }
+    rpio.pwmSetRange(12, msg.clock);
+    rpio.pwmSetData(12, msg.data);
   });
   console.log('end of listen');
 }
