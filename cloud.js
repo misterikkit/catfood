@@ -3,28 +3,7 @@ const rpio = require('rpio');
 const spawn = require('child_process').spawn;
 
 
-function setup() {
-  // Subprocess to set PWM mark:space mode because it isn't in the API.
-  const setms = spawn('gpio', ['pwm-ms']);
-  rpio.open(12, rpio.PWM);
-  // divide 19.2Mhz by 128 (150kHz)
-  rpio.pwmSetClockDivider(128);
-  // Set 3000 clock ticks per pwm cycle (20ms)
-  rpio.pwmSetRange(12, 3000);
-}
 
-function forward() {
-  // 1.3ms == 195
-  rpio.pwmSetData(12, 195);
-}
-function reverse() {
-  // 1.7ms == 255
-  rpio.pwmSetData(12, 255);
-}
-function stop() {
-  // 1.5ms == 225
-  rpio.pwmSetData(12, 225);
-}
 
 // cb called on disconnect.
 function listen(cb) {

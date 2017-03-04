@@ -60,3 +60,4 @@ eventEmitter.on('dispense', () => { run(config.program); });
 
 module.exports.setup = setup;
 module.exports.dispense = () => { eventEmitter.emit('dispense'); };
+module.exports.on = eventEmitter.on;
