@@ -4,6 +4,7 @@
   "description": "IOT catfood automated dispenser",
   "main": "catfood.js",
   "dependencies": {
+    "log-timestamp": "^0.1.2",
     "node-schedule": "^1.2.0",
     "rpio": "^0.9.15",
     "socket.io-client": "^1.7.3"

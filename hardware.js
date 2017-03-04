@@ -1,7 +1,9 @@
+const events = require('events');
 const rpio = require('rpio');
 const spawn = require('child_process').spawn;
 const timers = require('timers');
-const events = require('events');
+// add timestamp to logs.
+require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 const config = {
   // divide 19.2Mhz by 128 (150kHz)
@@ -56,7 +58,10 @@ function run(sequence) {
   }
 }
 
-eventEmitter.on('dispense', () => { run(config.program); });
+eventEmitter.on('dispense', () => {
+  console.log('dispensing product');
+  run(config.program);
+});
 
 module.exports.setup = setup;
 module.exports.dispense = () => { eventEmitter.emit('dispense'); };
