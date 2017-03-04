@@ -2,7 +2,7 @@
   "name": "catfood",
   "version": "1.0.0",
   "description": "IOT catfood automated dispenser",
-  "main": "cloud.js",
+  "main": "catfood.js",
   "dependencies": {
     "rpio": "^0.9.15",
     "socket.io-client": "^1.7.3"
