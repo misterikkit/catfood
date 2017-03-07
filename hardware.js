@@ -11,11 +11,16 @@ const config = {
   // Set 3000 clock ticks per pwm cycle (20ms)
   range : 3000,
   pin : 12,
+  // Tests with this program yielded an average of 11.29 grams kibble per run.
   program : [
-    // Forward 3 seconds
-    {speed : 1, duration : 3.0},
-    // Reverse 0.5 seconds
-    {speed : -1, duration : 0.5}
+    // Forward 1 seconds
+    {speed : 1, duration : 1.0},
+    // Reverse 0.25 seconds
+    {speed : -1, duration : 0.25},
+    // Forward 1 seconds
+    {speed : 1, duration : 1.0},
+    // Reverse 0.25 seconds
+    {speed : -1, duration : 0.25}
   ]
 };
 const eventEmitter = new events.EventEmitter();
