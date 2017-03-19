@@ -1,19 +1,35 @@
 const hardware = require('./hardware.js');
+const request = require('request');
 const schedule = require('node-schedule');
 // add timestamp to logs.
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 hardware.setup();
 
+/////////////////////
+// WATCHDOG ALERTS //
+/////////////////////
+
+function stillAlive() {
+  request.post(
+    'https://tired-crab.glitch.me/keepalive',
+    {form: {secret: process.env.SECRET}}
+  );
+}
+
+// Recurrence rule for watchdog keepalives.
+const watchdog = new schedule.RecurrenceRule();
+watchdog.minute = [0, 15, 30, 45];
+schedule.scheduleJob(watchdog, stillAlive);
+stillAlive();  // One keepalive to signal job start.
+
 //////////////////////
 // FEEDING SCHEDULE //
 //////////////////////
 
-// 6AM
-schedule.scheduleJob({hour : 6, minute : 0}, hardware.dispense);
-// NOON
-schedule.scheduleJob({hour : 12, minute : 0}, hardware.dispense);
-// 11PM
-schedule.scheduleJob({hour : 23, minute : 0}, hardware.dispense);
+// Recurrence rule for feedings at 6AM, NOON, and 11PM.
+const feedings = new schedule.RecurrenceRule();
+feedings.hour = [6, 12, 23];
+schedule.scheduleJob(feedings, hardware.dispense);
 
 console.log('catfood startup complete');
