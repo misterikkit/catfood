@@ -31,6 +31,7 @@ function setup() {
   rpio.open(config.pin, rpio.PWM);
   rpio.pwmSetClockDivider(config.clockDivider);
   rpio.pwmSetRange(config.pin, config.range);
+  stop();
 }
 
 function forward() {
