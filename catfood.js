@@ -19,7 +19,7 @@ function stillAlive() {
 
 // Recurrence rule for watchdog keepalives.
 const watchdog = new schedule.RecurrenceRule();
-watchdog.minute = [0, 15, 30, 45];
+watchdog.second = 0;
 schedule.scheduleJob(watchdog, stillAlive);
 stillAlive();  // One keepalive to signal job start.
 
