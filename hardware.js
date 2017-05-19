@@ -37,14 +37,17 @@ function setup() {
 function forward() {
   // 1.3ms == 195 ticks (/3000)
   rpio.pwmSetData(config.pin, 195);
+  // TODO: Setting the PWM range to config.range + 195 here is slightly more
+  // accurate according to the servo spec.
 }
 function reverse() {
   // 1.7ms == 255 ticks (/3000)
   rpio.pwmSetData(config.pin, 255);
 }
 function stop() {
-  // 1.5ms == 225 ticks (/3000)
-  rpio.pwmSetData(config.pin, 225);
+  // In theory, setting the PWM to 225 ticks (1.5ms) should stop the motor.
+  // In practice, a 0% duty cycle is more effective.
+  rpio.pwmSetData(config.pin, 0);
 }
 
 function run(sequence) {
