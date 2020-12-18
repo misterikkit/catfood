@@ -19,7 +19,7 @@
     "url": "git+https://github.com/misterikkit/catfood.git"
   },
   "author": "misterikkit",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/misterikkit/catfood/issues"
   },
