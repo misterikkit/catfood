@@ -1,15 +1,15 @@
 {
   "dependencies": {
+    "@google-cloud/datastore": "^6.3.1",
     "express": "^4.17.1"
   },
   "name": "catfood-backend",
   "version": "1.0.0",
   "description": "Backend for IOT cat food dispenser",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "GOOGLE_APPLICATION_CREDENTIALS=$HOME/catfood-svc-account.json node test.js",
+    "start": "GOOGLE_APPLICATION_CREDENTIALS=$HOME/catfood-svc-account.json node index.js"
   },
   "repository": {
     "type": "git",
