@@ -45,6 +45,16 @@ function AddSchedule(newTime) {
                 entity.schedule = [];
             }
             entity.schedule.push({ H: newTime.H, M: newTime.M });
+            // Sort schedule by hour then minute
+            entity.schedule.sort((a, b) => {
+                if (a.H < b.H) { return -1; }
+                if (a.H > b.H) { return 1; }
+                // H is equal
+                if (a.M < b.M) { return -1; }
+                if (a.M > b.M) { return 1; }
+                return 0;
+            })
+            // Write change to datastore
             datastore.update({ key: configKey, data: entity }, (err) => {
                 if (err) {
                     reject(err);
