@@ -44,6 +44,40 @@
             <a href="#" data-icon="gear" class="ui-btn-right">Advanced</a>
         </div>
 
+        <div data-role="popup" id="editSchedule" data-theme="a" class="ui-corner-all">
+            <form>
+                <div style="padding:10px 20px;">
+                    <h2>Edit the feeding time</h2>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <label for="editHour" class="ui-hidden-accessible">Hour:</label>
+                            <input type="number" min="0" max="23" id="editHour" placeholder="Hour" />
+                        </div>
+                        <div class="ui-block-b">
+                            <label for="editMinute" class="ui-hidden-accessible">Minute:</label>
+                            <input type="number" min="0" max="59" id="editMinute" placeholder="Minute" />
+                        </div>
+                    </div>
+
+                    <fieldset class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <button id="editDelete"
+                                class="ui-btn ui-btn-a ui-btn-inline ui-btn-icon-left ui-icon-delete ui-corner-all">Delete</button>
+                        </div>
+                        <div class="ui-block-b">
+                            <button id="editUpdate"
+                                class="ui-btn ui-btn-b ui-btn-inline ui-btn-icon-left ui-icon-check ui-corner-all">Update</button>
+                        </div>
+                    </fieldset>
+
+                    <div id="confirmDelete">
+                        Really delete it?
+                        <button>Yes, really</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </div><!-- /page -->
     <script src="/js/client.js"></script>
 </body>

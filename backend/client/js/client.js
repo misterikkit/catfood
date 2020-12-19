@@ -1,17 +1,17 @@
 function fillSchedule(schedule) {
-    let view = $("#schedule");
-    view.html("");
+    let view = $('#schedule');
+    view.html('');
     schedule.forEach((t) => {
-        let item = $(`<li><a href="#">${fmtTime(t)}</a><a href="#popupLogin" data-rel="popup"></a></li>`);
-        item.find("a").last()
-            .attr("time", JSON.stringify(t))
+        let item = $(`<li><a href="#">${fmtTime(t)}</a><a href="#"></a></li>`);
+        item.find('a').last()
+            .attr('time', JSON.stringify(t))
             .click(editSchedule);
         view.append(item);
     });
-    let add = $("<li data-icon='plus'><a href='#'>add to the schedule</a></li>");
-    add.find("a").click(addSchedule);
+    let add = $('<li data-icon="plus"><a href="#">add to the schedule</a></li>');
+    add.find('a').click(addSchedule);
     view.append(add);
-    view.listview("refresh");
+    view.listview('refresh');
 }
 
 function fmtTime(t) {
@@ -23,8 +23,11 @@ function fmtTime(t) {
     return `${h}:${m}`
 }
 
-function editSchedule() {
-
+function editSchedule(e) {
+    time = JSON.parse($(e.target).attr('time'))
+    $('#editHour').val(time.H);
+    $('#editMinute').val(time.M);
+    $('#editSchedule').popup('open');
 }
 
 function addSchedule() {
@@ -37,6 +40,16 @@ function init() {
         .done((config) => {
             fillSchedule(config.schedule);
         });
+
+    $('#editSchedule').on('popupafterclose', () => {
+        $('#confirmDelete').hide();
+    });
+    $('#confirmDelete').hide();
+
+    $('#editDelete').click(() => {
+        $('#confirmDelete').slideDown();
+        return false;
+    });
 }
 
 $(init);
