@@ -11,8 +11,17 @@ app.get('/', (req, res) => {
     res.sendFile('client/html/index.html', { root: '.' })
 })
 
-
-app.get('/config', (req, res) => config.GetConfig(req, res));
+app.get('/config', (req, res) => {
+    config.Get()
+        .catch((err) => {
+            res.statusCode = 500;
+            res.send(err);
+        })
+        .then((config) => {
+            res.setHeader('content-type', 'application/json');
+            res.send(config);
+        });
+});
 
 app.post('/config/schedule', (req, res) => {
     const now = new Date();
