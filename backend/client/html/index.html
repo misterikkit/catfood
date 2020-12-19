@@ -2,12 +2,11 @@
 <html>
 
 <head>
-    <title>Page Title</title>
+    <title>Cat Feeder</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon-192x192.png">
-
 
     <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <script src="//code.jquery.com/jquery-1.11.3.min.js" integrity="sha256-7LkWEzqTdpEfELxcZZlS6wAx5Ff13zZ83lYO2/ujj7g="
@@ -22,10 +21,18 @@
     <div data-role="page">
 
         <div data-role="header">
-            <h1>Cat Feeder</h1>
-        </div><!-- /header -->
+            <h1>😸 Cat Feeder 😺</h1>
+        </div>
 
         <div role="main" class="ui-content">
+            <h2>Schedule</h2>
+
+            <ul id="schedule" data-role="listview" data-inset="true" data-split-icon="edit">
+                <li>loading...</li>
+            </ul>
+
+            <button id="btn-feed">Feed The Cat</button>
+
             <p>
             <form action="/config/schedule" , method="post">
                 <button type="submit">Add to schedule</button>
@@ -34,11 +41,11 @@
         </div><!-- /content -->
 
         <div data-role="footer">
-            <h4>Page Footer</h4>
-            <button class="ui-btn-right" data-icon="gear">Advanced</button>
-        </div><!-- /footer -->
-    </div><!-- /page -->
+            <a href="#" data-icon="gear" class="ui-btn-right">Advanced</a>
+        </div>
 
+    </div><!-- /page -->
+    <script src="/js/client.js"></script>
 </body>
 
 </html>
