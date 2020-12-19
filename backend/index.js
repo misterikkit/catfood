@@ -17,8 +17,14 @@ app.get('/config', (req, res) => config.GetConfig(req, res));
 app.post('/config/schedule', (req, res) => {
     const now = new Date();
     const t = { H: now.getHours(), M: now.getMinutes() };
-    config.AddSchedule(t);
-    res.send('ok');
+    config.AddSchedule(t)
+        .catch((err) => {
+            res.statusCode = 500;
+            res.send(err);
+        })
+        .then(() => {
+            res.send('ok');
+        });
 });
 
 app.listen(port, () => {

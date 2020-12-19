@@ -26,24 +26,34 @@ async function Get() {
     return result[0]
 }
 
-async function Set(cfg) {
 
-}
 
 // Add a time to the schedule (and sort it)
 // newTime is {H, M}
-async function AddSchedule(newTime) {
-    // TODO: use a transaction
-    let cfg = await Get();
-    if (!"schedule" in cfg) {
-        cfg.schedule = [];
-    }
-    if (!Array.isArray(cfg.schedule)) {
-        cfg.schedule = [];
-    }
-    cfg.schedule.push({ H: newTime.H, M: newTime.M });
-    // TODO: sort schedule
-    datastore.update({ key: configKey, data: cfg }).catch(console.error);
+function AddSchedule(newTime) {
+    return new Promise((resolve, reject) => {
+        // TODO: use a transaction
+        datastore.get(configKey, (err, entity) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (!'schedule' in entity) {
+                entity.schedule = [];
+            }
+            if (!Array.isArray(entity.schedule)) {
+                entity.schedule = [];
+            }
+            entity.schedule.push({ H: newTime.H, M: newTime.M });
+            datastore.update({ key: configKey, data: entity }, (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
+    });
 }
 
 exports.GetConfig = GetConfig;
