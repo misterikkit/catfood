@@ -32,6 +32,7 @@ function AddSchedule(newTime) {
             if (!Array.isArray(entity.schedule)) {
                 entity.schedule = [];
             }
+            // TODO: Check for duplicates
             entity.schedule.push({ H: newTime.H, M: newTime.M });
             // Sort schedule by hour then minute
             entity.schedule.sort((a, b) => {
@@ -54,5 +55,41 @@ function AddSchedule(newTime) {
     });
 }
 
+function DeleteSchedule(time) {
+    return new Promise((resolve, reject) => {
+        datastore.get(configKey, (err, entity) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (!'schedule' in entity) {
+                entity.schedule = [];
+            }
+            if (!Array.isArray(entity.schedule)) {
+                entity.schedule = [];
+            }
+            const idx = entity.schedule.findIndex((t) => timeEq(t, time));
+            if (idx == -1) {
+                resolve();
+                return;
+            }
+            entity.schedule.splice(idx, 1);
+            // Write change to datastore
+            datastore.update({ key: configKey, data: entity }, (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
+    });
+}
+
+function timeEq(a, b) {
+    return a.H === b.H && a.M === b.M;
+}
+
 exports.Get = Get;
 exports.AddSchedule = AddSchedule;
+exports.DeleteSchedule = DeleteSchedule;

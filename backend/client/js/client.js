@@ -27,11 +27,24 @@ function editScheduleStart(e) {
     time = JSON.parse($(e.target).attr('time'))
     $('#editHour').val(time.H);
     $('#editMinute').val(time.M);
+    $('#editOldHour').val(time.H);
+    $('#editOldMinute').val(time.M);
     $('#editSchedule').popup('open');
 }
 
 function editScheduleSubmit() {
-    $.post()
+    console.log('Editing schedule')
+    $.post('/config/schedule/edit', $('#editForm').serialize())
+        .fail(console.error)
+        .done(loadConfig);
+    return false; // to prevent regular submission
+}
+
+function deleteScheduleSubmit() {
+    console.log('Deleting from schedule')
+    $.post('/config/schedule/delete', $('#editForm').serialize())
+        .fail(console.error)
+        .done(loadConfig);
     return false; // to prevent regular submission
 }
 
@@ -40,6 +53,7 @@ function addScheduleStart() {
 }
 
 function addScheduleSubmit() {
+    console.log('Adding to schedule')
     $.post('/config/schedule/add', $('#addForm').serialize())
         .fail(console.error)
         .done(loadConfig);
@@ -47,6 +61,7 @@ function addScheduleSubmit() {
 }
 
 function loadConfig() {
+    console.log('Loading config')
     $.get('/config')
         .fail(console.error)
         .done((config) => {
@@ -67,6 +82,8 @@ function init() {
     });
 
     $('#addSubmit').click(addScheduleSubmit);
+    $('#editUpdate').click(editScheduleSubmit);
+    $('#reallyConfirmDelete').click(deleteScheduleSubmit);
 }
 
 $(init);

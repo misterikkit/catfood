@@ -47,7 +47,9 @@
         </div>
 
         <div data-role="popup" id="editSchedule" data-theme="a" class="ui-corner-all">
-            <form>
+            <form id="editForm">
+                <input type="hidden" name="oldHour" id="editOldHour" />
+                <input type="hidden" name="oldMinute" id="editOldMinute" />
                 <div style="padding:10px 20px;">
                     <h2>Edit the feeding time</h2>
                     <div class="ui-grid-a">
@@ -74,7 +76,7 @@
 
                     <div id="confirmDelete">
                         Really delete it?
-                        <button>Yes, really</button>
+                        <button id="reallyConfirmDelete">Yes, really</button>
                     </div>
                 </div>
             </form>

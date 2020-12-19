@@ -50,8 +50,20 @@ app.post('/config/schedule/add', (req, res) => {
         .then(() => {
             res.send('ok');
         });
-})
+});
+
+app.post('/config/schedule/delete', (req, res) => {
+    // TODO: validate input
+    config.DeleteSchedule({ H: req.body.oldHour, M: req.body.oldMinute })
+        .catch((err) => {
+            res.statusCode = 500;
+            res.send(err);
+        })
+        .then(() => {
+            res.send('ok');
+        });
+});
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
+    console.log(`Catfood backend listening at http://localhost:${port}`)
+});
