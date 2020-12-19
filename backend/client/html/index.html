@@ -80,6 +80,30 @@
             </form>
         </div>
 
+        <div data-role="popup" id="addSchedule" data-theme="a" class="ui-corner-all">
+            <form id="addForm">
+                <div style="padding:10px 20px;">
+                    <h2>Add a feeding time</h2>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <label for="editHour" class="ui-hidden-accessible">Hour:</label>
+                            <input type="number" min="0" max="23" id="addHour" name="newHour" placeholder="Hour" />
+                        </div>
+                        <div class="ui-block-b">
+                            <label for="editMinute" class="ui-hidden-accessible">Minute:</label>
+                            <input type="number" min="0" max="59" id="addMinute" name="newMinute"
+                                placeholder="Minute" />
+                        </div>
+                    </div>
+
+
+                    <button id="addSubmit" type="submit"
+                        class="ui-btn ui-btn-b  ui-btn-icon-left ui-icon-check ui-corner-all">Add</button>
+
+                </div>
+            </form>
+        </div>
+
         <div data-role="panel" id="advanced" data-position="right" data-display="push" data-theme="b">
             <p>Coming soon</p>
         </div><!-- /panel -->
