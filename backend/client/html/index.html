@@ -14,6 +14,8 @@
     <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"
         integrity="sha384-u7i0wHEdsFrw92D1Z0sk2r6kiOGnZJhnawPUT0he8TRKfD4/XMEsj22l/cHFXO3v"
         crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
@@ -35,10 +37,14 @@
 
         </div><!-- /content -->
 
-        <div data-role="footer">
-            <a href="#" class="ui-btn ui-shadow ui-corner-all ui-mini ui-icon-alert ui-btn-icon-notext"></a>
-            <i>Device status: unknown</i>
-            <a href="#advanced" data-icon="gear" class="ui-btn-right ui-mini">Advanced</a>
+        <div data-role="footer" data-position="fixed">
+            <div class="ui-bar">
+                <a href="#"
+                    class="ui-btn ui-corner-all ui-btn-inline ui-mini footer-button-left ui-btn-icon-notext ui-icon-alert">unknown</a>
+                <i>Device status: unknown</i>
+                <a href="#advanced"
+                    class="ui-btn ui-corner-all ui-btn-inline ui-btn-right ui-mini footer-button-right ui-btn-icon-right ui-icon-gear">Advanced</a>
+            </div>
         </div>
 
         <div data-role="popup" id="editSchedule" data-theme="a" class="ui-corner-all">
