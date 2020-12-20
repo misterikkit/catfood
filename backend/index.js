@@ -27,14 +27,6 @@ app.get('/config', (req, res) => {
         });
 });
 
-app.post('/config/schedule', (req, res) => {
-    const now = new Date();
-    const t = { H: now.getHours(), M: now.getMinutes() };
-    config.AddSchedule(t)
-        .then(() => sendOK(req, res))
-        .catch((err) => handleErr(err, req, res));
-});
-
 app.post('/config/schedule/add', (req, res) => {
     const time = asTime(req.body.newHour, req.body.newMinute);
     if (!validTime(time)) {
