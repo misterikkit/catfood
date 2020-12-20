@@ -35,16 +35,18 @@ function editScheduleStart(e) {
 function editScheduleSubmit() {
     console.log('Editing schedule')
     $.post('/config/schedule/edit', $('#editForm').serialize())
-        .fail(console.error)
-        .done(loadConfig);
+        .done(loadConfig)
+        .done(() => { $('#editSchedule').popup('close'); })
+        .fail(console.error);
     return false; // to prevent regular submission
 }
 
 function deleteScheduleSubmit() {
     console.log('Deleting from schedule')
     $.post('/config/schedule/delete', $('#editForm').serialize())
-        .fail(console.error)
-        .done(loadConfig);
+        .done(loadConfig)
+        .done(() => { $('#editSchedule').popup('close'); })
+        .fail(console.error);
     return false; // to prevent regular submission
 }
 
@@ -55,19 +57,19 @@ function addScheduleStart() {
 function addScheduleSubmit() {
     console.log('Adding to schedule')
     $.post('/config/schedule/add', $('#addForm').serialize())
-        .fail(console.error)
         .done(loadConfig)
-        .done(() => { $('#addSchedule').popup('close'); });
+        .done(() => { $('#addSchedule').popup('close'); })
+        .fail(console.error);
     return false; // to prevent regular submission
 }
 
 function loadConfig() {
     console.log('Loading config')
     $.get('/config')
-        .fail(console.error)
         .done((config) => {
             fillSchedule(config.schedule);
-        });
+        })
+        .fail(console.error);
 }
 
 function init() {

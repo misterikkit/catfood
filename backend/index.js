@@ -31,53 +31,69 @@ app.post('/config/schedule', (req, res) => {
     const now = new Date();
     const t = { H: now.getHours(), M: now.getMinutes() };
     config.AddSchedule(t)
-        .catch((err) => {
-            res.statusCode = 500;
-            res.send(err);
-        })
-        .then(() => {
-            res.send('ok');
-        });
+        .then(() => sendOK(req, res))
+        .catch((err) => handleErr(err, req, res));
 });
 
 app.post('/config/schedule/add', (req, res) => {
-    // TODO: validate input
-    config.AddSchedule({ H: req.body.newHour, M: req.body.newMinute })
-        .catch((err) => {
-            res.statusCode = 500;
-            res.send(err);
-        })
-        .then(() => {
-            res.send('ok');
-        });
+    const time = asTime(req.body.newHour, req.body.newMinute);
+    if (!validTime(time)) {
+        handleErr(`invalid time: ${JSON.stringify(time)}`, req, res);
+        return;
+    }
+    config.AddSchedule(time)
+        .then(() => sendOK(req, res))
+        .catch((err) => handleErr(err, req, res));
 });
 
 app.post('/config/schedule/edit', (req, res) => {
-    // TODO: validate input
-    config.EditSchedule(
-        { H: req.body.oldHour, M: req.body.oldMinute },
-        { H: req.body.newHour, M: req.body.newMinute }
-    )
-        .catch((err) => {
-            res.statusCode = 500;
-            res.send(err);
-        })
-        .then(() => {
-            res.send('ok');
-        });
+    const oldTime = asTime(req.body.oldHour, req.body.oldMinute);
+    const newTime = asTime(req.body.newHour, req.body.newMinute);
+    if (!validTime(oldTime)) {
+        handleErr(`invalid time: ${JSON.stringify(oldTime)}`, req, res);
+        return;
+    }
+    if (!validTime(newTime)) {
+        handleErr(`invalid time: ${JSON.stringify(newTime)}`, req, res);
+        return;
+    }
+    config.EditSchedule(oldTime, newTime)
+        .then(() => sendOK(req, res))
+        .catch((err) => handleErr(err, req, res));
 });
 
 app.post('/config/schedule/delete', (req, res) => {
-    // TODO: validate input
-    config.DeleteSchedule({ H: req.body.oldHour, M: req.body.oldMinute })
-        .catch((err) => {
-            res.statusCode = 500;
-            res.send(err);
-        })
-        .then(() => {
-            res.send('ok');
-        });
+    const oldTime = asTime(req.body.oldHour, req.body.oldMinute);
+    if (!validTime(oldTime)) {
+        handleErr(`invalid time: ${JSON.stringify(oldTime)}`, req, res);
+        return;
+    }
+    config.DeleteSchedule(oldTime)
+        .then(() => sendOK(req, res))
+        .catch((err) => handleErr(err, req, res));
 });
+
+function asTime(h, m) {
+    let t = { H: parseInt(h), M: parseInt(m) };
+}
+
+function validTime(t) {
+    return (
+        t.H >= 0 && t.H < 24
+        && t.M >= 0 && t.M < 60
+    );
+}
+
+function handleErr(err, req, res) {
+    console.error(`${req.path}: ${err}`)
+    res.statusCode = 500;
+    res.send(err);
+}
+
+function sendOK(req, res) {
+    console.log(`${req.path}: ok`);
+    res.send('ok');
+}
 
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)

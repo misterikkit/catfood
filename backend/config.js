@@ -73,7 +73,7 @@ function EditSchedule(oldTime, newTime) {
 
             const idx = entity.schedule.findIndex((t) => timeEq(t, oldTime));
             if (idx == -1) {
-                reject('old time not found');
+                reject(`time not found: ${JSON.stringify(oldTime)}`);
                 return;
             }
             entity.schedule.splice(idx, 1, newTime);
@@ -105,7 +105,7 @@ function DeleteSchedule(time) {
             }
             const idx = entity.schedule.findIndex((t) => timeEq(t, time));
             if (idx == -1) {
-                resolve();
+                reject(`time not found: ${JSON.stringify(time)}`);
                 return;
             }
             entity.schedule.splice(idx, 1);
