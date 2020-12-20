@@ -74,7 +74,7 @@ app.post('/config/schedule/delete', (req, res) => {
 });
 
 function asTime(h, m) {
-    let t = { H: parseInt(h), M: parseInt(m) };
+    return { H: parseInt(h), M: parseInt(m) };
 }
 
 function validTime(t) {
