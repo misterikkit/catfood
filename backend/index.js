@@ -52,6 +52,21 @@ app.post('/config/schedule/add', (req, res) => {
         });
 });
 
+app.post('/config/schedule/edit', (req, res) => {
+    // TODO: validate input
+    config.EditSchedule(
+        { H: req.body.oldHour, M: req.body.oldMinute },
+        { H: req.body.newHour, M: req.body.newMinute }
+    )
+        .catch((err) => {
+            res.statusCode = 500;
+            res.send(err);
+        })
+        .then(() => {
+            res.send('ok');
+        });
+});
+
 app.post('/config/schedule/delete', (req, res) => {
     // TODO: validate input
     config.DeleteSchedule({ H: req.body.oldHour, M: req.body.oldMinute })

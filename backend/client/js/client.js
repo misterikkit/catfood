@@ -56,7 +56,8 @@ function addScheduleSubmit() {
     console.log('Adding to schedule')
     $.post('/config/schedule/add', $('#addForm').serialize())
         .fail(console.error)
-        .done(loadConfig);
+        .done(loadConfig)
+        .done(() => { $('#addSchedule').popup('close'); });
     return false; // to prevent regular submission
 }
 

@@ -16,6 +16,8 @@ function Get() {
     });
 }
 
+// TODO: Remove duplicate code from Add/Edit/Delete
+
 // Add a time to the schedule (and sort it)
 // newTime is {H, M}
 function AddSchedule(newTime) {
@@ -43,6 +45,39 @@ function AddSchedule(newTime) {
                 if (a.M > b.M) { return 1; }
                 return 0;
             })
+            // Write change to datastore
+            datastore.update({ key: configKey, data: entity }, (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
+    });
+}
+
+function EditSchedule(oldTime, newTime) {
+    return new Promise((resolve, reject) => {
+        datastore.get(configKey, (err, entity) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (!'schedule' in entity) {
+                entity.schedule = [];
+            }
+            if (!Array.isArray(entity.schedule)) {
+                entity.schedule = [];
+            }
+
+            const idx = entity.schedule.findIndex((t) => timeEq(t, oldTime));
+            if (idx == -1) {
+                reject('old time not found');
+                return;
+            }
+            entity.schedule.splice(idx, 1, newTime);
+
             // Write change to datastore
             datastore.update({ key: configKey, data: entity }, (err) => {
                 if (err) {
@@ -92,4 +127,5 @@ function timeEq(a, b) {
 
 exports.Get = Get;
 exports.AddSchedule = AddSchedule;
+exports.EditSchedule = EditSchedule;
 exports.DeleteSchedule = DeleteSchedule;
