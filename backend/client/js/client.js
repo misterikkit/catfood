@@ -51,6 +51,8 @@ function deleteScheduleSubmit() {
 }
 
 function addScheduleStart() {
+    $('#addHour').val('00');
+    $('#addMinute').val('00');
     $('#addSchedule').popup('open');
 }
 
