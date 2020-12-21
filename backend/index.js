@@ -8,6 +8,8 @@ const authHandlers = require('./handle-auth');
 const configHandlers = require('./handle-config');
 
 const app = express();
+var expressWs = require('express-ws')(app);
+
 const port = process.env.PORT || 3000;
 
 app.use(express.static('client')); // Client content is statically served
@@ -31,6 +33,15 @@ app.get('/', (req, res) => {
 
 configHandlers.SetUp(app);
 authHandlers.SetUp(app);
+
+
+app.ws('/ws/echo', function (ws, req) {
+    ws.on('message', function (msg) {
+        console.log(`WS: got ${msg}`);
+        ws.send('reply: ' + msg);
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)
