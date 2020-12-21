@@ -118,6 +118,12 @@ app.post('/login', (req, res) => {
         });
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.cookie('logged_in', '', { expires: new Date(Date.now() - 1) });
+    res.redirect('/');
+});
+
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)
 });

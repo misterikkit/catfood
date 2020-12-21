@@ -23,6 +23,14 @@ function fmtTime(t) {
     return `${h}:${m}`
 }
 
+function handleError(err, st) {
+    if (err.status === 403) {
+        $('div[data-role="popup"]').popup('close')
+        // Delay is needed for the popup to open
+        window.setTimeout(() => { $('#forbidden').delay(50).popup('open'); }, 50);
+    }
+}
+
 function editScheduleStart(e) {
     time = JSON.parse($(e.target).attr('time'))
     $('#editHour').val(time.H);
@@ -37,7 +45,7 @@ function editScheduleSubmit() {
     $.post('/config/schedule/edit', $('#editForm').serialize())
         .done(loadConfig)
         .done(() => { $('#editSchedule').popup('close'); })
-        .fail(console.error);
+        .fail(handleError);
     return false; // to prevent regular submission
 }
 
@@ -46,7 +54,7 @@ function deleteScheduleSubmit() {
     $.post('/config/schedule/delete', $('#editForm').serialize())
         .done(loadConfig)
         .done(() => { $('#editSchedule').popup('close'); })
-        .fail(console.error);
+        .fail(handleError);
     return false; // to prevent regular submission
 }
 
@@ -61,7 +69,7 @@ function addScheduleSubmit() {
     $.post('/config/schedule/add', $('#addForm').serialize())
         .done(loadConfig)
         .done(() => { $('#addSchedule').popup('close'); })
-        .fail(console.error);
+        .fail(handleError);
     return false; // to prevent regular submission
 }
 
@@ -71,7 +79,7 @@ function loadConfig() {
         .done((config) => {
             fillSchedule(config.schedule);
         })
-        .fail(console.error);
+        .fail(handleError);
 }
 
 function init() {
