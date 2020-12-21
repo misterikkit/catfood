@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 const auth = require('./auth');
+const authHandlers = require('./handle-auth');
 const configHandlers = require('./handle-config');
 
 const app = express();
@@ -19,6 +20,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+// Enforce authz and authn on POST and websocket requests.
 app.use(auth.CheckSession);
 
 // Special case for static client index
@@ -27,35 +30,7 @@ app.get('/', (req, res) => {
 })
 
 configHandlers.SetUp(app);
-
-app.post('/login', (req, res) => {
-    const csrf_token_cookie = req.cookies.g_csrf_token;
-    if (!csrf_token_cookie) {
-        res.status(400).send('No CSRF token in Cookie.');
-    }
-    const csrf_token_body = req.body.g_csrf_token;
-    if (!csrf_token_body) {
-        res.status(400).send('No CSRF token in post body.');
-    }
-    if (csrf_token_cookie != csrf_token_body) {
-        res.status(400).send('Failed to verify double submit cookie.')
-    }
-
-    auth.Verify(req.body.credential)
-        .then((user) => {
-            req.session.email = user.email;
-            res.cookie('logged_in', 'yes');
-            res.redirect('/');
-        })
-        .catch((err) => {
-            res.status(401).send(err);
-        });
-});
-
-app.post('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
-});
+authHandlers.SetUp(app);
 
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)
