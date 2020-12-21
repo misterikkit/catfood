@@ -5,6 +5,7 @@ const session = require('express-session');
 
 const auth = require('./auth');
 const authHandlers = require('./handle-auth');
+const broker = require('./broker');
 const configHandlers = require('./handle-config');
 
 const app = express();
@@ -23,7 +24,7 @@ app.use(session({
     saveUninitialized: false
 }));
 
-// Enforce authz and authn on POST and websocket requests.
+// Enforce authz and authn on POST requests.
 app.use(auth.CheckSession);
 
 // Special case for static client index
@@ -34,12 +35,10 @@ app.get('/', (req, res) => {
 configHandlers.SetUp(app);
 authHandlers.SetUp(app);
 
+const brk = new broker.Broker();
 
 app.ws('/ws/echo', function (ws, req) {
-    ws.on('message', function (msg) {
-        console.log(`WS: got ${msg}`);
-        ws.send('reply: ' + msg);
-    });
+    brk.AddClientSocket(ws);
 });
 
 
