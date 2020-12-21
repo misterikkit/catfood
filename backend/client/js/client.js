@@ -84,6 +84,18 @@ function loadConfig() {
         .fail(handleError);
 }
 
+function feedCatNow() {
+    console.log('Feeding the cat');
+    $.post('/feedcatnow')
+        .done(() => {
+            $('#btn-feed').text('😻 You fed the cat! 😻');
+            setTimeout(() => {
+                $('#btn-feed').text($('#btn-feed').attr('origText'));
+            }, 5000);
+        })
+        .fail(handleError);
+}
+
 function init() {
     loadConfig();
     $('#editSchedule').on('popupafterclose', () => {
@@ -99,6 +111,8 @@ function init() {
     $('#addSubmit').click(addScheduleSubmit);
     $('#editUpdate').click(editScheduleSubmit);
     $('#reallyConfirmDelete').click(deleteScheduleSubmit);
+    $('#btn-feed').attr('origText', $('#btn-feed').text());
+    $('#btn-feed').click(feedCatNow);
 }
 
 $(init);

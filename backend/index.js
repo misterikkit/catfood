@@ -40,6 +40,8 @@ app.ws('/device', (ws) => { brk.AddDeviceSocket(ws); });
 configHandlers.SetUp(app, brk);
 authHandlers.SetUp(app);
 
+app.post('/feedcatnow', (req, res) => { brk.emit('feedCatNow'); res.send('ok') });
+
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)
 });
