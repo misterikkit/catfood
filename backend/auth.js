@@ -30,24 +30,30 @@ async function Verify(token) {
         audience: secret.clientID,
     });
     const payload = ticket.getPayload();
-    console.log('PAYLOAD');
-    console.log(payload);
+
     if (!payload['email_verified']) { throw 'email not verified'; }
     if (payload['aud'] !== secret.clientID) { throw 'invalid audience'; }
     return { email: payload['email'] }
 }
 
-// CheckSession inspects the current session to see if the user has
-// authenticated, and sets the 'logged_in' cookie appropriately (to prevent
-// google one-tap popup). This returns true if the user is authenticated.
-function CheckSession(req, res) {
+// CheckSession is express middleware that inspects the current session to see
+// if the user has authenticated, and sets the 'logged_in' cookie appropriately
+// (to prevent google one-tap popup).
+function CheckSession(req, res, next) {
+    // Make sure to populate 'logged_in'
     if (req.session.email) {
         res.cookie('logged_in', 'yes');
-        return true;
+        return next();
     } else {
         res.cookie('logged_in', '', { expires: new Date(Date.now() - 1) });
-        return false;
     }
+
+    // Allow GET unauthenticated
+    if (req.method === "GET") { return next(); }
+    // Special case for login page
+    if (req.path === "/login") { return next(); }
+
+    res.sendStatus(401);
 }
 
 exports.Verify = Verify;

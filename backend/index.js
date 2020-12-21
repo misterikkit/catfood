@@ -14,6 +14,7 @@ app.use(express.static('client')); // Client content is statically served
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({ secret: new Date().toString() })); // todo: secure static secret. Stable secret doesn't matter until we persist sessions, anyhow
+app.use(auth.CheckSession);
 
 // Special case for static client index
 app.get('/', (req, res) => {
@@ -33,10 +34,6 @@ app.get('/config', (req, res) => {
 });
 
 app.post('/config/schedule/add', (req, res) => {
-    if (!auth.CheckSession(req, res)) {
-        res.sendStatus(401);
-        return;
-    }
     const time = asTime(req.body.newHour, req.body.newMinute);
     if (!validTime(time)) {
         handleErr(`invalid time: ${JSON.stringify(time)}`, req, res);
@@ -48,10 +45,6 @@ app.post('/config/schedule/add', (req, res) => {
 });
 
 app.post('/config/schedule/edit', (req, res) => {
-    if (!auth.CheckSession(req, res)) {
-        res.sendStatus(401);
-        return;
-    }
     const oldTime = asTime(req.body.oldHour, req.body.oldMinute);
     const newTime = asTime(req.body.newHour, req.body.newMinute);
     if (!validTime(oldTime)) {
@@ -68,10 +61,6 @@ app.post('/config/schedule/edit', (req, res) => {
 });
 
 app.post('/config/schedule/delete', (req, res) => {
-    if (!auth.CheckSession(req, res)) {
-        res.sendStatus(401);
-        return;
-    }
     const oldTime = asTime(req.body.oldHour, req.body.oldMinute);
     if (!validTime(oldTime)) {
         handleErr(`invalid time: ${JSON.stringify(oldTime)}`, req, res);
