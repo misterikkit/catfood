@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fake Cat Feeder</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon-192x192.png">
+
+    <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="//code.jquery.com/jquery-1.11.3.min.js" integrity="sha256-7LkWEzqTdpEfELxcZZlS6wAx5Ff13zZ83lYO2/ujj7g="
+        crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"
+        integrity="sha384-u7i0wHEdsFrw92D1Z0sk2r6kiOGnZJhnawPUT0he8TRKfD4/XMEsj22l/cHFXO3v"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Fake Device</h1>
+    <h2>Log</h2>
+    <ul></ul>
+    <script>
+
+        function connect() {
+            const ws = new WebSocket('ws://localhost:3000/device');
+            ws.onopen = () => { console.log('connected') }
+            ws.onerror = (e) => { console.log('error', e); ws.close(); }
+            ws.onclose = () => { console.log('disconnected'); setTimeout(connect, 500); }
+            ws.onmessage = (e) => { $('ul').prepend(`<li>${e.data}</li>`) }
+        }
+        $(connect)
+    </script>
+
+</body>
+
+</html>

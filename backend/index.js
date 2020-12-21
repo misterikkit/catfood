@@ -37,9 +37,8 @@ authHandlers.SetUp(app);
 
 const brk = new broker.Broker();
 
-app.ws('/ws/echo', function (ws, req) {
-    brk.AddClientSocket(ws);
-});
+app.ws('/client', (ws) => { brk.AddClientSocket(ws); });
+app.ws('/device', (ws) => { brk.AddDeviceSocket(ws); });
 
 
 app.listen(port, () => {
