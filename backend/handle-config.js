@@ -16,13 +16,15 @@ function handleErr(err, req, res) {
     res.status(500).send(err);
 }
 
-function sendOK(req, res) {
+// Used for successful mutations.
+function sendOK(broker, req, res) {
     console.log(`${req.path}: ok`);
     res.send('ok');
+    broker.emit('configUpdate');
 }
 
 
-function SetUp(app) {
+function SetUp(app, broker) {
     app.get('/config', (req, res) => {
         // This URI allows unauthenticated access.
         config.Get()
@@ -42,7 +44,7 @@ function SetUp(app) {
             return;
         }
         config.AddSchedule(time)
-            .then(() => sendOK(req, res))
+            .then(() => sendOK(broker, req, res))
             .catch((err) => handleErr(err, req, res));
     });
 
@@ -58,7 +60,7 @@ function SetUp(app) {
             return;
         }
         config.EditSchedule(oldTime, newTime)
-            .then(() => sendOK(req, res))
+            .then(() => sendOK(broker, req, res))
             .catch((err) => handleErr(err, req, res));
     });
 
@@ -69,7 +71,7 @@ function SetUp(app) {
             return;
         }
         config.DeleteSchedule(oldTime)
-            .then(() => sendOK(req, res))
+            .then(() => sendOK(broker, req, res))
             .catch((err) => handleErr(err, req, res));
     });
 }

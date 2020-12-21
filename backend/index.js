@@ -32,14 +32,13 @@ app.get('/', (req, res) => {
     res.sendFile('client/html/index.html', { root: '.' });
 })
 
-configHandlers.SetUp(app);
-authHandlers.SetUp(app);
-
 const brk = new broker.Broker();
 
 app.ws('/client', (ws) => { brk.AddClientSocket(ws); });
 app.ws('/device', (ws) => { brk.AddDeviceSocket(ws); });
 
+configHandlers.SetUp(app, brk);
+authHandlers.SetUp(app);
 
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)
