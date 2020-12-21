@@ -34,6 +34,19 @@ async function Verify(token) {
     return { email: payload['email'] }
 }
 
+_userList = null;
+function getUserList() {
+    if (_userList) { return Promise.resolve(_userList); }
+    return new Promise((resolve, reject) => {
+        config.GetBackend()
+            .then((cfg) => {
+                _userList = cfg.UserAllowList;
+                resolve(_userList);
+            })
+            .catch(reject);
+    });
+}
+
 // CheckSession is express middleware that inspects the current session to see
 // if the user has authenticated, and sets the 'logged_in' cookie appropriately
 // (to prevent google one-tap popup).
@@ -41,7 +54,6 @@ function CheckSession(req, res, next) {
     // Make sure to populate 'logged_in'
     if (req.session.email) {
         res.cookie('logged_in', 'yes');
-        return next();
     } else {
         res.cookie('logged_in', '', { expires: new Date(Date.now() - 1) });
     }
@@ -50,6 +62,22 @@ function CheckSession(req, res, next) {
     if (req.method === "GET") { return next(); }
     // Special case for login page
     if (req.path === "/login") { return next(); }
+
+    // If logged in, check the allow list
+    if (req.session.email) {
+        getUserList()
+            .then((list) => {
+                if (list.includes(req.session.email)) {
+                    console.log('user is allowed')
+                    return next();
+                }
+                console.log('user is not allowed')
+                res.status(403).send(`${req.session.email} is not on the list`);
+                // TODO: clear logged_in cookie here to enable a different login?
+            })
+            .catch((err) => { res.status(403).send(err); });
+        return;
+    }
 
     res.sendStatus(401);
 }
