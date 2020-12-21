@@ -23,12 +23,14 @@ function fmtTime(t) {
     return `${h}:${m}`
 }
 
-function handleError(err, st) {
+function handleError(err) {
+    console.error(err);
     if (err.status === 403) {
         $('div[data-role="popup"]').popup('close')
         // Delay is needed for the popup to open
         window.setTimeout(() => { $('#forbidden').delay(50).popup('open'); }, 50);
     }
+    // TODO: respond to 401 with a sign-in button
 }
 
 function editScheduleStart(e) {

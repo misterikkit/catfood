@@ -13,7 +13,12 @@ app.use(express.static('client')); // Client content is statically served
 // I'm rather surprised that bodyParser and cookieParser are sold separately.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: new Date().toString() })); // todo: secure static secret. Stable secret doesn't matter until we persist sessions, anyhow
+app.use(session({
+    // todo: secure static secret. Stable secret doesn't matter until we persist sessions, anyhow
+    secret: new Date().toString(),
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(auth.CheckSession);
 
 // Special case for static client index
@@ -118,9 +123,8 @@ app.post('/login', (req, res) => {
         });
 });
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
     req.session.destroy();
-    res.cookie('logged_in', '', { expires: new Date(Date.now() - 1) });
     res.redirect('/');
 });
 

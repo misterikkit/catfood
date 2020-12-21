@@ -51,6 +51,10 @@ function getUserList() {
 // if the user has authenticated, and sets the 'logged_in' cookie appropriately
 // (to prevent google one-tap popup).
 function CheckSession(req, res, next) {
+    // Special case for login and logout pages
+    if (req.path === "/login") { return next(); }
+    if (req.path === "/logout") { return next(); }
+
     // Make sure to populate 'logged_in'
     if (req.session.email) {
         res.cookie('logged_in', 'yes');
@@ -60,8 +64,6 @@ function CheckSession(req, res, next) {
 
     // Allow GET unauthenticated
     if (req.method === "GET") { return next(); }
-    // Special case for login page
-    if (req.path === "/login") { return next(); }
 
     // If logged in, check the allow list
     if (req.session.email) {
