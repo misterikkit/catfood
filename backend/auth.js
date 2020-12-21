@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
 
+const config = require('./config');
+
 /**
  * How does auth work here?
  *
@@ -15,24 +17,20 @@ const { OAuth2Client } = require('google-auth-library');
  * 7. The /config/* handlers return 403 if the user is not on the allow list
  */
 
-
-const rawsecret = fs.readFileSync(process.env.OAUTH_SECRET);
-const secret = JSON.parse(rawsecret);
-console.log(`OAuth client ID is ${secret.clientID}`);
-
-const client = new OAuth2Client(secret.clientID);
-
 // Verify process the result of OAuth login to verify the results. The returned
 // object contains the user's email.
 async function Verify(token) {
+    const cfg = await config.GetBackend();
+    const client = new OAuth2Client(cfg.OAuthClientID);
+    console.log(`Using OAuth client id ${cfg.OAuthClientID}`);
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: secret.clientID,
+        audience: cfg.OAuthClientID,
     });
     const payload = ticket.getPayload();
 
     if (!payload['email_verified']) { throw 'email not verified'; }
-    if (payload['aud'] !== secret.clientID) { throw 'invalid audience'; }
+    if (payload['aud'] !== cfg.OAuthClientID) { throw 'invalid audience'; }
     return { email: payload['email'] }
 }
 

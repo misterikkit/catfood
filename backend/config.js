@@ -2,11 +2,25 @@ const { Datastore } = require('@google-cloud/datastore');
 
 const datastore = new Datastore();
 const configKey = datastore.key(['CatFeederConfig', 'config']);
+const backendConfigKey = datastore.key(['BackendConfig', 'config']);
 
 // Return the entire config object
 function Get() {
     return new Promise((resolve, reject) => {
         datastore.get(configKey, (err, entity) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(entity);
+        });
+    });
+}
+
+// Return the entire backend config object
+function GetBackend() {
+    return new Promise((resolve, reject) => {
+        datastore.get(backendConfigKey, (err, entity) => {
             if (err) {
                 reject(err);
                 return;
@@ -112,6 +126,7 @@ function timeCmp(a, b) {
 }
 
 exports.Get = Get;
+exports.GetBackend = GetBackend;
 exports.AddSchedule = AddSchedule;
 exports.EditSchedule = EditSchedule;
 exports.DeleteSchedule = DeleteSchedule;

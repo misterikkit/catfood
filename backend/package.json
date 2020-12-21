@@ -13,7 +13,7 @@
   "main": "index.js",
   "scripts": {
     "test": "GOOGLE_APPLICATION_CREDENTIALS=$HOME/catfood-svc-account.json node test.js",
-    "local": "OAUTH_SECRET=$HOME/oauth-secret.json GOOGLE_APPLICATION_CREDENTIALS=$HOME/catfood-svc-account.json node index.js",
+    "local": "GOOGLE_APPLICATION_CREDENTIALS=$HOME/catfood-svc-account.json node index.js",
     "start": "node index.js"
   },
   "repository": {
