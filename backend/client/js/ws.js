@@ -18,10 +18,12 @@ function setStatusBar(state) {
 
 function connect() {
     console.log('connecting')
-    ws = new WebSocket('ws://localhost:3000/ws/echo');
+    const proto = location.protocol == 'http:' ? 'ws://' : 'wss://';
+    const host = location.host;
+    ws = new WebSocket(`${proto}${host}/client`);
     ws.onopen = () => { console.log('connected'); };
     ws.onmessage = (e) => { setStatusBar(JSON.parse(e.data)); };
-    ws.onclose = (e) => {
+    ws.onclose = () => {
         console.log('socket closed');
         setStatusBar({});
         setTimeout(connect, 500);
