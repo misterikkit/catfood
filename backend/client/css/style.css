@@ -1,13 +1,28 @@
-.footer-button-left,
+.center {
+  text-align: center;
+}
+
+/* .footer-button-left,
 .footer-button-right {
-      position: absolute;
-      margin: 0;
-      top: auto;
-      bottom: 0.24em;
+  position: absolute;
+  margin: 0;
+  top: auto;
+  bottom: 0.24em;
 }
 .footer-button-left {
-      left: 0.4em;
+  left: 0.4em;
 }
 .footer-button-right {
-      right: 0.4em;
+  right: 0.4em;
+} */
+
+/* Custom indentations are needed because the length of custom labels differs from
+   the length of the standard labels */
+/*
+.custom-label-flipswitch.ui-flipswitch .ui-btn.ui-flipswitch-on {
+  text-indent: -3.4em;
 }
+.custom-label-flipswitch.ui-flipswitch .ui-flipswitch-off {
+  text-indent: 0.5em;
+}
+*/
