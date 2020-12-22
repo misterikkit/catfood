@@ -3,7 +3,7 @@ const WebSocket = require('ws');
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 
-function Connect() {
+function Connect(emitter) {
     console.log('Connecting to cloud');
     const ws = new WebSocket('ws://10.0.0.13:3000/device');
 
@@ -18,11 +18,11 @@ function Connect() {
 
     ws.on('close', () => {
         console.log('Disconnected');
-        setTimeout(Connect, 500);
+        setTimeout(() => { Connect(emitter); }, 500);
     });
 
     ws.on('message', function incoming(data) {
-        console.log('Message from cloud', data);
+        emitter.send(data.type, data.config);
     });
 }
 

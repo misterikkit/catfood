@@ -1,11 +1,16 @@
 const hardware = require('./hardware');
 const cloud = require('./cloud');
+const events = require('events');
 const schedule = require('node-schedule');
 // add timestamp to logs.
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 hardware.setup();
-cloud.Connect();
+
+const emitter = new events.EventEmitter();
+emitter.on('config', (cfg) => { console.log('got new config', cfg.schedule); });
+emitter.on('feedNow', hardware.dispense);
+cloud.Connect(emitter);
 
 //////////////////////
 // FEEDING SCHEDULE //
