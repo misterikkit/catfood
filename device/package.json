@@ -11,7 +11,8 @@
     "ws": "^7.4.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fake": "FAKE=yes node catfood"
   },
   "repository": {
     "type": "git",

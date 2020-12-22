@@ -1,6 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 
-const configPath = '/home/pi/catfood_config.json';
+
+const configPath = path.join(process.env.HOME, 'catfood_config.json');
 
 function Save(cfg) {
     return new Promise((resolve, reject) => {
