@@ -16,7 +16,7 @@ function Save(cfg) {
 
 function Load() {
     return new Promise((resolve, reject) => {
-        fs.readFileSync(configPath, (err, data) => {
+        fs.readFile(configPath, (err, data) => {
             if (err) {
                 reject(err);
                 return;
