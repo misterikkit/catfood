@@ -24,7 +24,7 @@ function Connect(emitter) {
     ws.on('message', (data) => {
         console.log('Cloud data received')
         const msg = JSON.parse(data)
-        emitter.emit(data.type, data.config);
+        emitter.emit(msg.type, msg.config);
     });
 }
 

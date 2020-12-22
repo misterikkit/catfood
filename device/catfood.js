@@ -1,5 +1,7 @@
 const hardware = require('./hardware');
 const cloud = require('./cloud');
+const config = require('./config');
+
 const events = require('events');
 const schedule = require('node-schedule');
 // add timestamp to logs.
@@ -8,7 +10,11 @@ require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 hardware.setup();
 
 const emitter = new events.EventEmitter();
-emitter.on('config', (cfg) => { console.log('got new config', cfg.schedule); });
+emitter.on('config', (cfg) => {
+    console.log('got new config', cfg.schedule);
+    config.Save(cfg)
+        .catch(console.error);
+});
 emitter.on('feedNow', hardware.dispense);
 cloud.Connect(emitter);
 
