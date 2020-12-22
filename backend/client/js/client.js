@@ -14,6 +14,61 @@ function fillSchedule(schedule) {
     view.listview('refresh');
 }
 
+function fillProgram(program) {
+    let view = $('#program');
+    view.html('');
+    program.map((step) => {
+        let item = makeProgramRow();
+        if (step.direction === 'FWD') {
+            item.find('input[type="checkbox"]').prop('checked', true);
+        }
+        item.find('input[type="number"]').val(step.amount);
+        item.find('a').click((e) => { $(e.target).closest('li').remove(); })
+        view.append(item);
+    })
+    let add = $('<li data-icon="plus"><a href="#">add a step</a></li>');
+    add.find('a').click(() => {
+        makeProgramRow().insertBefore(add);
+        view.listview('refresh');
+    });
+    view.append(add);
+    // view.listview('refresh');
+}
+
+function makeProgramRow() {
+    // TODO: clean this up a lot.
+    return $(`<li><fieldset class="ui-grid-b">
+    <div class="ui-block-a">
+             <input type="checkbox" data-role="flipswitch"
+                data-on-text="fwd" data-off-text="rev"
+                data-wrapper-class="custom-label-flipswitch" />
+        </div>
+        <div class="ui-block-b">
+            <input type="number" name="amount"/>
+        </div>
+        <div class="ui-block-c">
+            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a>
+        </div>
+    </fieldset></li>`);
+}
+
+function editProgramSubmit() {
+    console.log('Updating program');
+    const form = $('#programForm');
+    // Make unchecked check boxes explicit.
+    form.find('input[type="checkbox"]').each((i, box) => {
+        const dir = $(box).prop('checked') ? 'FWD' : 'REV';
+        form.append($(`<input type="hidden" name="direction" value="${dir}">`));
+        // $(box).val($(box).prop('checked'))
+        // console.log($(box).prop('checked'))
+    })
+    $.post('/config/program', $('#programForm').serialize())
+        .done(loadConfig)
+        .fail(handleError);
+    $.mobile.navigate('#main');
+    return false; // to prevent regular submission
+}
+
 function fmtTime(t) {
     let h = `${t.H}`;
     let m = `${t.M}`;
@@ -80,6 +135,7 @@ function loadConfig() {
     $.get('/config')
         .done((config) => {
             fillSchedule(config.schedule);
+            fillProgram(config.program);
         })
         .fail(handleError);
 }
@@ -113,6 +169,7 @@ function init() {
     $('#reallyConfirmDelete').click(deleteScheduleSubmit);
     $('#btn-feed').attr('origText', $('#btn-feed').text());
     $('#btn-feed').click(feedCatNow);
+    $('#programSubmit').click(editProgramSubmit);
 }
 
 $(init);

@@ -27,7 +27,7 @@
         data-auto_select="true" data-login_uri="/login" data-skip_prompt_cookie="logged_in">
     </div>
 
-    <div data-role="page">
+    <div data-role="page" id="main" data-theme="b">
 
         <div data-role="header">
             <h1>😸 Cat Feeder 😺</h1>
@@ -46,11 +46,11 @@
 
         <div data-role="footer" data-position="fixed">
             <div class="ui-bar">
-                <button id="statusIcon" data-icon="alert" data-iconpos="notext" class="ui-mini">unknown</button>
+                <button id="statusIcon" data-icon="alert" data-iconpos="notext">unknown</button>
                 <span id="statusText"><i>Device status: unknown</i></span>
 
-                <a href="#advanced"
-                    class="ui-btn ui-corner-all ui-btn-inline ui-btn-right ui-mini footer-button-right ui-btn-icon-right ui-icon-gear">Advanced</a>
+                <a href="#advanced" data-transition="slideup" data-rel="dialog"
+                    class="ui-btn ui-corner-all ui-btn-inline ui-btn-right footer-button-right ui-btn-icon-right ui-icon-gear">Advanced</a>
             </div>
         </div>
 
@@ -124,11 +124,49 @@
             </div>
         </div>
 
-        <div data-role="panel" id="advanced" data-position="right" data-display="push" data-theme="b">
-            <p>Coming soon</p>
-        </div><!-- /panel -->
+
 
     </div><!-- /page -->
+
+    <div data-role="page" id="advanced" data-position="right" data-display="push" data-theme="a">
+
+        <div data-role="header">
+            <h1>Edit Program</h1>
+        </div>
+
+        <div role="main" class="ui-content">
+            <form id="programForm">
+                <ul id="program" data-role="listview" data-inset="true">
+                    <li>Loading...</li>
+                    <li class="ui-body">
+                        <fieldset class="ui-grid-b center">
+                            <div class="ui-block-a">
+                                 <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2"
+                                    id="flip-checkbox-2" data-on-text="fwd" data-off-text="rev"
+                                    data-wrapper-class="custom-label-flipswitch" />
+                            </div>
+                            <div class="ui-block-b">
+                                <input type="number" />
+                            </div>
+                            <div class="ui-block-c" style="text-align:center">
+                                <a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a>
+                            </div>
+                        </fieldset>
+                    </li>
+                    <li>fwd 1</li>
+                    <li>bak 0.25</li>
+                </ul>
+                <input type="submit" id="programSubmit">Save</input>
+            </form>
+
+        </div><!-- /content -->
+
+
+
+
+
+    </div><!-- /page -->
+
     <script src="/js/client.js"></script>
     <script src="/js/ws.js"></script>
 </body>
