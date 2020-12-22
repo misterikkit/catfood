@@ -1,10 +1,11 @@
-const hardware = require('./hardware.js');
-const request = require('request');
+const hardware = require('./hardware');
+const cloud = require('./cloud');
 const schedule = require('node-schedule');
 // add timestamp to logs.
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 hardware.setup();
+cloud.Connect();
 
 //////////////////////
 // FEEDING SCHEDULE //
