@@ -16,4 +16,5 @@ rm -f catfood
 ln -s catfood-${VERSION} catfood
 cd catfood
 npm install
+dos2unix run.sh
 EOF
