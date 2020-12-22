@@ -6,23 +6,6 @@ require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 hardware.setup();
 
-/////////////////////
-// WATCHDOG ALERTS //
-/////////////////////
-
-function stillAlive() {
-  request.post(
-    'https://tired-crab.glitch.me/keepalive',
-    {form: {secret: process.env.SECRET}}
-  );
-}
-
-// Recurrence rule for watchdog keepalives.
-const watchdog = new schedule.RecurrenceRule();
-watchdog.second = 0;
-schedule.scheduleJob(watchdog, stillAlive);
-stillAlive();  // One keepalive to signal job start.
-
 //////////////////////
 // FEEDING SCHEDULE //
 //////////////////////
