@@ -5,7 +5,7 @@ require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 function Connect(emitter) {
     console.log('Cloud connecting');
-    const ws = new WebSocket('ws://10.0.0.13:3000/device');
+    const ws = new WebSocket('wss://catfood.basseri.com/device');
 
     ws.on('open', function open() {
         console.log('Cloud connected');
