@@ -47,6 +47,13 @@ function MutateConfig(fn) {
                 entity.schedule = [];
             }
 
+            if (!'program' in entity) {
+                entity.program = [];
+            }
+            if (!Array.isArray(entity.program)) {
+                entity.program = [];
+            }
+
             // Do the actual work
             try { fn(entity); }
             catch (e) {
@@ -110,6 +117,13 @@ function DeleteSchedule(time) {
     });
 }
 
+// Replaces the program with a new one.
+function OverwriteProgram(program) {
+    return MutateConfig((config) => {
+        config.program = program;
+    });
+}
+
 // Because object equality needs a helper function
 function timeEq(a, b) {
     return a.H === b.H && a.M === b.M;
@@ -130,3 +144,4 @@ exports.GetBackend = GetBackend;
 exports.AddSchedule = AddSchedule;
 exports.EditSchedule = EditSchedule;
 exports.DeleteSchedule = DeleteSchedule;
+exports.OverwriteProgram = OverwriteProgram;

@@ -11,6 +11,10 @@ function validTime(t) {
     );
 }
 
+function validProgram(p) {
+    return true; // TODO
+}
+
 function handleErr(err, req, res) {
     console.error(`${req.path}: ${err}`)
     res.status(500).send(err);
@@ -71,6 +75,15 @@ function SetUp(app, broker) {
             return;
         }
         config.DeleteSchedule(oldTime)
+            .then(() => sendOK(broker, req, res))
+            .catch((err) => handleErr(err, req, res));
+    });
+
+    app.post('/config/program', (req, res) => {
+        console.log(req.body);
+        program = req.body.amount.map((amount, i) => { return { amount: amount, direction: req.body.direction[i] }; });
+        console.log(program);
+        config.OverwriteProgram(program)
             .then(() => sendOK(broker, req, res))
             .catch((err) => handleErr(err, req, res));
     });
