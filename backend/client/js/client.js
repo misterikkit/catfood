@@ -38,18 +38,18 @@ function fillProgram(program) {
 function makeProgramRow() {
     // TODO: clean this up a lot.
     return $(`<li><fieldset class="ui-grid-b">
-    <div class="ui-block-a">
-             <input type="checkbox" data-role="flipswitch"
-                data-on-text="fwd" data-off-text="rev"
-                data-wrapper-class="custom-label-flipswitch" />
-        </div>
-        <div class="ui-block-b">
-            <input type="number" name="amount"/>
-        </div>
-        <div class="ui-block-c">
-            <a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a>
-        </div>
-    </fieldset></li>`);
+<div class="ui-block-a">
+<input type="checkbox" data-role="flipswitch"
+data-on-text="fwd" data-off-text="rev"
+data-wrapper-class="custom-label-flipswitch" />
+</div>
+<div class="ui-block-b">
+<input type="number" name="amount"/>
+</div>
+<div class="ui-block-c">
+<a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a>
+</div>
+</fieldset></li>`);
 }
 
 function editProgramSubmit() {
