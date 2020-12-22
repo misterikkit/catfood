@@ -27,7 +27,7 @@
         data-auto_select="true" data-login_uri="/login" data-skip_prompt_cookie="logged_in">
     </div>
 
-    <div data-role="page" id="main" data-theme="b">
+    <div data-role="page" id="main" data-theme="a">
 
         <div data-role="header">
             <h1>😸 Cat Feeder 😺</h1>
@@ -44,7 +44,7 @@
 
         </div><!-- /content -->
 
-        <div data-role="footer" data-position="fixed">
+        <div data-role="footer">
             <div class="ui-bar">
                 <button id="statusIcon" data-icon="alert" data-iconpos="notext">unknown</button>
                 <span id="statusText"><i>Device status: unknown</i></span>
@@ -158,6 +158,11 @@
                 </ul>
                 <input type="submit" id="programSubmit">Save</input>
             </form>
+
+            <form action="/logout" method="post" data-ajax="false">
+                <button type="submit" class="ui-btn ui-btn-corner-all">Sign Out</button>
+            </form>
+            <a href="#" onclick="google.accounts.id.prompt();">sign in?</a>
 
         </div><!-- /content -->
 
