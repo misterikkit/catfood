@@ -79,6 +79,7 @@ class Broker extends EventEmitter {
     feedCatNow() {
         if (this.deviceSocket === null) {
             console.error('Cannot feed cat: no socket');
+            return;
         }
         this.deviceSocket.send(JSON.stringify({ type: 'feedNow' }));
     }
