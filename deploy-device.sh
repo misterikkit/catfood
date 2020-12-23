@@ -14,8 +14,7 @@ ssh $TARGET << EOF
 set -x
 source .nvm/nvm.sh
 pm2 stop catfood-device
-rm -f catfood
-ln -s catfood-${VERSION} catfood
+ln -sfT catfood-${VERSION} catfood
 cd catfood
 npm install
 dos2unix run.sh
