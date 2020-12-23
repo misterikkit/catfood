@@ -9,6 +9,6 @@ while true; do
     fi
     sleep 1
 done
-uptime -p | tee -a /home/pi/catfood.log
+uptime -p
 cd $(dirname $0)
-sudo CLOUD_TARGET="$CLOUD_TARGET" node catfood | tee -a /home/pi/catfood.log
+sudo CLOUD_TARGET="$CLOUD_TARGET" node catfood
