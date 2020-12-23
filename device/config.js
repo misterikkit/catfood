@@ -4,6 +4,7 @@ const path = require('path');
 
 const configPath = path.join(process.env.HOME, 'catfood_config.json');
 
+// Save config to disk
 function Save(cfg) {
     return new Promise((resolve, reject) => {
         fs.writeFile(configPath, JSON.stringify(cfg), (err) => {
@@ -16,6 +17,7 @@ function Save(cfg) {
     });
 }
 
+// Load config from disk
 function Load() {
     return new Promise((resolve, reject) => {
         fs.readFile(configPath, (err, data) => {
