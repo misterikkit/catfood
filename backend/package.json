@@ -6,7 +6,8 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "express-ws": "^4.0.0",
-    "google-auth-library": "^6.1.3"
+    "google-auth-library": "^6.1.3",
+    "morgan": "^1.10.0"
   },
   "name": "catfood-backend",
   "version": "1.0.0",

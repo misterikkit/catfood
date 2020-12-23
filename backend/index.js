@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const morgan = require('morgan');
 
 const auth = require('./auth');
 const authHandlers = require('./handle-auth');
@@ -17,6 +18,10 @@ app.use(express.static('client')); // Client content is statically served
 // I'm rather surprised that bodyParser and cookieParser are sold separately.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// Log HTTP errors
+app.use(morgan('tiny', {
+    skip: function (req, res) { return res.statusCode < 400 }
+}));
 app.use(session({
     // todo: secure static secret. Stable secret doesn't matter until we persist sessions, anyhow
     secret: new Date().toString(),
