@@ -17,14 +17,16 @@ TODO: describe it
 
 # Production
 
-Both device and backend use pm2 to manage the app. They also use nvm to install node/npm.
+Both device and backend use pm2 to manage the app. They also use nvm to install
+node/npm. Note that `catfood/` symlink must be part of the path passed to pm2
+or else it will resolve the symlink only once.
 
 ```
 # backend
-pm2 start index.js --name catfood-backend --log $HOME/catfood.log
+pm2 start catfood/run.sh --name catfood-backend --log $HOME/catfood.log
 
 # device
-pm2 start run.sh --name catfood-device --log $HOME/catfood.log
+pm2 start catfood/run.sh --name catfood-device --log $HOME/catfood.log
 ```
 
 A free GCE f1-micro with static IPv4 address. This allows full flexibility on allowing websockets and managing SSL.
