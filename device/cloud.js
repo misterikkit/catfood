@@ -2,10 +2,10 @@ const WebSocket = require('ws');
 // add timestamp to logs.
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
-
+const target = process.env.CLOUD_TARGET || 'ws://10.0.0.13:3000/device';
 function Connect(emitter) {
     console.log('Cloud connecting');
-    const ws = new WebSocket('ws://10.0.0.13:3000/device');
+    const ws = new WebSocket(target);
 
     ws.on('open', function open() {
         console.log('Cloud connected');
