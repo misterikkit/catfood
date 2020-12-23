@@ -2,7 +2,8 @@
 
 set -x
 
-TARGET="misterikkit@35.202.123.26"
+. $HOME/catfood.env
+TARGET="$BACKEND_TARGET"
 VERSION="$(git describe --always --dirty)"
 
 cd $(dirname $0)

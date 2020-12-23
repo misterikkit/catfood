@@ -2,7 +2,8 @@
 
 set -x
 
-TARGET="pi@10.0.0.3"
+. $HOME/catfood.env
+TARGET="$DEVICE_TARGET"
 VERSION="$(git describe --always --dirty)"
 
 cd $(dirname $0)
