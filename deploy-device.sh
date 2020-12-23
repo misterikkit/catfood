@@ -8,7 +8,6 @@ VERSION="$(git describe --always --dirty)"
 cd $(dirname $0)
 
 rsync -az --progress --exclude node_modules device/ "${TARGET}:catfood-${VERSION}"
-# ssh $TARGET bash -c "rm catfood && ln -s catfood-${VERSION} catfood"
 
 ssh $TARGET << EOF
 set -x
