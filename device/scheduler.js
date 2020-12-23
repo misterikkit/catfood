@@ -17,7 +17,7 @@ class Scheduler {
         times.map((time) => {
             const j = schedule.scheduleJob({ hour: time.H, minute: time.M }, this.dispense);
             this.jobs.push(j);
-            console.log(j.nextInvocation());
+            console.log('Dispense at', j.nextInvocation());
         })
         console.log('Applied schedule')
     }

@@ -7,27 +7,27 @@ require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 const config = {
   // divide 19.2Mhz by 128 (150kHz)
-  clockDivider : 128,
+  clockDivider: 128,
   // Set 3000 clock ticks per pwm cycle (20ms)
-  range : 3000,
-  pin : 12,
+  range: 3000,
+  pin: 12,
   // Tests with this program yielded an average of 11.29 grams kibble per run.
-  program : [
+  program: [
     // Forward 1 seconds
-    {speed : 1, duration : 1.0},
+    { speed: 1, duration: 1.0 },
     // Reverse 0.25 seconds
-    {speed : -1, duration : 0.25},
+    { speed: -1, duration: 0.25 },
     // Forward 1 seconds
-    {speed : 1, duration : 1.0},
+    { speed: 1, duration: 1.0 },
     // Reverse 0.25 seconds
-    {speed : -1, duration : 0.25}
+    { speed: -1, duration: 0.25 }
   ]
 };
 const eventEmitter = new events.EventEmitter();
 
 function setup() {
   // Subprocess to set PWM mark:space mode because it isn't in the API.
-  const setms = spawn('gpio', [ 'pwm-ms' ]);
+  const setms = spawn('gpio', ['pwm-ms']);
   rpio.open(config.pin, rpio.PWM);
   rpio.pwmSetClockDivider(config.clockDivider);
   rpio.pwmSetRange(config.pin, config.range);
@@ -55,20 +55,20 @@ function run(sequence) {
     stop();
   } else {
     switch (sequence[0].speed) {
-    case 1:
-      forward();
-      break;
-    case -1:
-      reverse();
-      break;
+      case 1:
+        forward();
+        break;
+      case -1:
+        reverse();
+        break;
     }
     timers.setTimeout(() => { run(sequence.slice(1)); },
-                      1000 * sequence[0].duration);
+      1000 * sequence[0].duration);
   }
 }
 
 eventEmitter.on('dispense', () => {
-  console.log('dispensing product');
+  console.log('Dispensing product');
   run(config.program);
 });
 
