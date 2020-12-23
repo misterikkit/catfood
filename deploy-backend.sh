@@ -13,9 +13,10 @@ rsync -az --progress --exclude node_modules backend/ "${TARGET}:catfood-${VERSIO
 ssh $TARGET << EOF
 set -x
 source .nvm/nvm.sh
+cd catfood-${VERSION}
+npm install
+cd ..
 pm2 stop catfood-backend
 ln -sfT catfood-${VERSION} catfood
-cd catfood
-npm install
 pm2 start catfood-backend
 EOF

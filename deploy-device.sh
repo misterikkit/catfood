@@ -13,10 +13,11 @@ rsync -az --progress --exclude node_modules device/ "${TARGET}:catfood-${VERSION
 ssh $TARGET << EOF
 set -x
 source .nvm/nvm.sh
-pm2 stop catfood-device
-ln -sfT catfood-${VERSION} catfood
-cd catfood
+cd catfood-${VERSION}
 npm install
 dos2unix run.sh
+cd ..
+pm2 stop catfood-device
+ln -sfT catfood-${VERSION} catfood
 pm2 start catfood-device
 EOF
