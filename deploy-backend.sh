@@ -16,7 +16,7 @@ source .nvm/nvm.sh
 cd catfood-${VERSION}
 npm install
 cd ..
-pm2 delete catfood-backend
+pm2 stop catfood-backend
 ln -sfT catfood-${VERSION} catfood
-pm2 start catfood/run.sh --name catfood-backend --log $HOME/catfood.log
+pm2 start catfood-backend
 EOF
