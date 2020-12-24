@@ -14,7 +14,13 @@ function validTime(t) {
 }
 
 function validProgram(p) {
-    return true; // TODO
+    return p.all((step) => {
+        return (
+            ['FWD', 'REV'].includes(step.direction) &&
+            !isNaN(step.amount) &&
+            step.amount > 0
+        );
+    });
 }
 
 function handleErr(err, req, res) {
@@ -46,7 +52,8 @@ function SetUp(app, broker) {
     app.post('/config/schedule/add', (req, res) => {
         const time = asTime(req.body.newHour, req.body.newMinute);
         if (!validTime(time)) {
-            handleErr(`invalid time: ${JSON.stringify(time)}`, req, res);
+            console.log(`Invalid time: ${JSON.stringify(time)}`)
+            res.status(400).send('Invalid time value');
             return;
         }
         config.AddSchedule(time)
@@ -58,11 +65,13 @@ function SetUp(app, broker) {
         const oldTime = asTime(req.body.oldHour, req.body.oldMinute);
         const newTime = asTime(req.body.newHour, req.body.newMinute);
         if (!validTime(oldTime)) {
-            handleErr(`invalid time: ${JSON.stringify(oldTime)}`, req, res);
+            console.log(`Invalid time: ${JSON.stringify(oldTime)}`)
+            res.status(400).send('Invalid time value');
             return;
         }
         if (!validTime(newTime)) {
-            handleErr(`invalid time: ${JSON.stringify(newTime)}`, req, res);
+            console.log(`Invalid time: ${JSON.stringify(newTime)}`)
+            res.status(400).send('Invalid time value');
             return;
         }
         config.EditSchedule(oldTime, newTime)
@@ -73,7 +82,8 @@ function SetUp(app, broker) {
     app.post('/config/schedule/delete', (req, res) => {
         const oldTime = asTime(req.body.oldHour, req.body.oldMinute);
         if (!validTime(oldTime)) {
-            handleErr(`invalid time: ${JSON.stringify(oldTime)}`, req, res);
+            console.log(`Invalid time: ${JSON.stringify(oldTime)}`)
+            res.status(400).send('Invalid time value');
             return;
         }
         config.DeleteSchedule(oldTime)
@@ -82,9 +92,12 @@ function SetUp(app, broker) {
     });
 
     app.post('/config/program', (req, res) => {
-        console.log(req.body);
         program = req.body.amount.map((amount, i) => { return { amount: amount, direction: req.body.direction[i] }; });
-        console.log(program);
+        if (!validProgram) {
+            console.log('Invalid program:', program);
+            res.status(400).send('Invalid program');
+        }
+        console.log('New program:', program);
         config.OverwriteProgram(program)
             .then(() => sendOK(broker, req, res))
             .catch((err) => handleErr(err, req, res));
