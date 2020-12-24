@@ -15,6 +15,9 @@ class Broker extends EventEmitter {
             if (this.deviceSocket) {
                 this.deviceSocket.ping();
             }
+            // If there were potentially many clients, I should spread out these
+            // heartbeats across the interval. But there are not.
+            this.clientSockets.map((s) => { s.ping() });
         }, 25 * 1000);
     }
 
