@@ -10,6 +10,12 @@ class Broker extends EventEmitter {
         this.clientSockets = [];
         this.on('configUpdate', () => { this.updateDevice(); });
         this.on('feedCatNow', () => { this.feedCatNow(); });
+        // heartbeat for device socket
+        setInterval(() => {
+            if (this.deviceSocket) {
+                this.deviceSocket.ping();
+            }
+        }, 25 * 1000);
     }
 
     AddClientSocket(s) {
