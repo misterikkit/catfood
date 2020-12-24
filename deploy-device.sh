@@ -19,5 +19,5 @@ dos2unix run.sh
 cd ..
 pm2 delete catfood-device
 ln -sfT catfood-${VERSION} catfood
-pm2 start catfood/run.sh --name catfood-device --log $HOME/catfood.log
+pm2 start catfood/run.sh --name catfood-device --log /home/pi/catfood.log
 EOF
