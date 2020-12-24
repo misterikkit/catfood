@@ -18,8 +18,10 @@ hardware.setup();
 // Set up scheduler with last known config.
 const sched = new scheduler.Scheduler(hardware.dispense);
 config.Load()
-    .then((cfg) => { sched.UpdateSchedule(cfg.schedule); })
-    .then((cfg) => { hardware.updateProgram(convertProgram(cfg.program)); })
+    .then((cfg) => {
+        sched.UpdateSchedule(cfg.schedule);
+        hardware.updateProgram(convertProgram(cfg.program));
+    })
     .catch((err) => { console.error('Config load error:', err); });
 
 // Connect to cloud for config updates and ad-hoc feedings.
