@@ -74,3 +74,7 @@ eventEmitter.on('dispense', () => {
 
 module.exports.setup = setup;
 module.exports.dispense = () => { eventEmitter.emit('dispense'); };
+module.exports.updateProgram = (p) => {
+  config.program = p;
+  console.log('Program updated');
+};
