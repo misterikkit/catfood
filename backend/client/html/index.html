@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <div data-role="popup" id="editSchedule" data-theme="a" class="ui-corner-all">
+        <div data-role="popup" data-transition="flow" id="editSchedule" data-theme="a" class="ui-corner-all">
             <form id="editForm">
                 <input type="hidden" name="oldHour" id="editOldHour" />
                 <input type="hidden" name="oldMinute" id="editOldMinute" />
@@ -91,7 +91,7 @@
             </form>
         </div>
 
-        <div data-role="popup" id="addSchedule" data-theme="a" class="ui-corner-all">
+        <div data-role="popup" data-transition="flow" id="addSchedule" data-theme="a" class="ui-corner-all">
             <form id="addForm">
                 <div style="padding:10px 20px;">
                     <h2>Add a feeding time</h2>
@@ -115,7 +115,7 @@
             </form>
         </div>
 
-        <div data-role="popup" id="forbidden" data-theme="a" class="ui-corner-all">
+        <div data-role="popup" data-transition="slideup" id="forbidden" data-theme="a" class="ui-corner-all">
             <div class="ui-content">
                 You are not authorized to do that.
                 <form action="/logout" method="post" data-ajax="false">
@@ -124,14 +124,14 @@
             </div>
         </div>
 
-        <div data-role="popup" id="unauthorized" class="ui-corner-all">
+        <div data-role="popup" data-transition="slideup" id="unauthorized" class="ui-corner-all">
             <div class="ui-content">
                 You must sign in to do that.
-                <a href="#" data-role="button" onclick="google.accounts.id.prompt();">Sign In</a>
+                <a href="#" data-role="button" id="signInBtn">Sign In</a>
             </div>
         </div>
 
-        <div data-role="popup" id="uhoh" class="ui-corner-all">
+        <div data-role="popup" data-transition="slideup" id="uhoh" class="ui-corner-all">
             <div class="ui-content">
                 That didn't work.
             </div>

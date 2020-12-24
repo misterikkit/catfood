@@ -86,8 +86,7 @@ function fmtTime(t) {
 
 function handleError(err) {
     console.error(err);
-    // close all popups so we can pop up an error
-    $('div[data-role="popup"]').popup('close')
+    // Pick which error popup.
     let popupID = '#uhoh';
     switch (err.status) {
         case 401:
@@ -97,8 +96,15 @@ function handleError(err) {
             popupID = '#forbidden';
             break;
     }
-    // Delay is needed for the popup to open
-    setTimeout(() => { $(popupID).popup('open'); }, 50);
+    // If needed, close the current popup and wait for its transition.
+    if ($.mobile.popup.active) {
+        $.mobile.popup.active.element.one('popupafterclose', () => {
+            $(popupID).popup('open');
+        });
+        $.mobile.popup.active.close();
+    } else {
+        $(popupID).popup('open');
+    }
 }
 
 function editScheduleStart(e) {
@@ -184,6 +190,10 @@ function init() {
     $('#btn-feed').click(feedCatNow);
     $('#programSubmit').click(editProgramSubmit);
     $('#programCancel').click(editProgramCancel);
+    $('#signInBtn').click(() => {
+        $('#unauthorized').popup('close');
+        google.accounts.id.prompt();
+    })
 }
 
 $(init);
