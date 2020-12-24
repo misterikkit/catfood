@@ -85,7 +85,11 @@ function handleError(err) {
         // Delay is needed for the popup to open
         window.setTimeout(() => { $('#forbidden').delay(50).popup('open'); }, 50);
     }
-    // TODO: respond to 401 with a sign-in button
+    if (err.status === 401) {
+        $('div[data-role="popup"]').popup('close')
+        // Delay is needed for the popup to open
+        window.setTimeout(() => { $('#unauthorized').delay(50).popup('open'); }, 50);
+    }
 }
 
 function editScheduleStart(e) {
