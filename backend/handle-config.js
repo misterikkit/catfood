@@ -14,7 +14,7 @@ function validTime(t) {
 }
 
 function validProgram(p) {
-    return p.all((step) => {
+    return p.every((step) => {
         return (
             ['FWD', 'REV'].includes(step.direction) &&
             !isNaN(step.amount) &&
@@ -92,10 +92,17 @@ function SetUp(app, broker) {
     });
 
     app.post('/config/program', (req, res) => {
-        program = req.body.amount.map((amount, i) => { return { amount: amount, direction: req.body.direction[i] }; });
-        if (!validProgram) {
+        // Convert form data into json struct.
+        program = req.body.amount.map((amount, i) => {
+            return {
+                amount: parseFloat(amount),
+                direction: req.body.direction[i]
+            };
+        });
+        if (!validProgram(program)) {
             console.log('Invalid program:', program);
             res.status(400).send('Invalid program');
+            return;
         }
         console.log('New program:', program);
         config.OverwriteProgram(program)
