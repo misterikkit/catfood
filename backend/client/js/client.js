@@ -30,26 +30,30 @@ function fillProgram(program) {
     add.find('a').click(() => {
         makeProgramRow().insertBefore(add);
         view.listview('refresh');
+        view.enhanceWithin();
     });
     view.append(add);
-    // view.listview('refresh');
+    try {
+        view.listview('refresh');
+        view.enhanceWithin();
+    }
+
+    catch (e) {
+        console.log('error refreshing program listview', e);
+    }
 }
 
 function makeProgramRow() {
-    // TODO: clean this up a lot.
-    return $(`<li><fieldset class="ui-grid-b">
-<div class="ui-block-a">
-<input type="checkbox" data-role="flipswitch"
-data-on-text="fwd" data-off-text="rev"
-data-wrapper-class="custom-label-flipswitch" />
-</div>
-<div class="ui-block-b">
-<input type="number" name="amount"/>
-</div>
-<div class="ui-block-c">
-<a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a>
-</div>
-</fieldset></li>`);
+    const direction = $('<input type="checkbox" data-role="flipswitch" data-on-text="fwd" data-off-text="rev" data-wrapper-class="custom-label-flipswitch" />');
+    const amount = $('<input type="number" name="amount"/>');
+    const del = $('<a href="#" data-role="button" data-icon="delete" data-iconpos="notext">delete</a>');
+    return $('<li></li>').append(
+        $('<fieldset></fieldset').addClass('ui-grid-b').append(
+            $('<div></div>').addClass('ui-block-a').css({ width: '40%' }).append(direction),
+            $('<div></div>').addClass('ui-block-b').css({ width: '45%' }).append(amount),
+            $('<div></div>').addClass('ui-block-c').css({ width: '15%' }).append(del)
+        )
+    );
 }
 
 function editProgramSubmit() {
@@ -59,14 +63,16 @@ function editProgramSubmit() {
     form.find('input[type="checkbox"]').each((i, box) => {
         const dir = $(box).prop('checked') ? 'FWD' : 'REV';
         form.append($(`<input type="hidden" name="direction" value="${dir}">`));
-        // $(box).val($(box).prop('checked'))
-        // console.log($(box).prop('checked'))
     })
     $.post('/config/program', $('#programForm').serialize())
         .done(loadConfig)
         .fail(handleError);
     $.mobile.navigate('#main');
     return false; // to prevent regular submission
+}
+
+function editProgramCancel() {
+
 }
 
 function fmtTime(t) {
@@ -174,6 +180,7 @@ function init() {
     $('#btn-feed').attr('origText', $('#btn-feed').text());
     $('#btn-feed').click(feedCatNow);
     $('#programSubmit').click(editProgramSubmit);
+    $('#programCancel').click(editProgramCancel);
 }
 
 $(init);

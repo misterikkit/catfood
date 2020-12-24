@@ -144,31 +144,18 @@
             <form id="programForm">
                 <ul id="program" data-role="listview" data-inset="true">
                     <li>Loading...</li>
-                    <li class="ui-body">
-                        <fieldset class="ui-grid-b center">
-                            <div class="ui-block-a">
-                                 <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2"
-                                    id="flip-checkbox-2" data-on-text="fwd" data-off-text="rev"
-                                    data-wrapper-class="custom-label-flipswitch" />
-                            </div>
-                            <div class="ui-block-b">
-                                <input type="number" />
-                            </div>
-                            <div class="ui-block-c" style="text-align:center">
-                                <a href="#" data-role="button" data-icon="delete" data-iconpos="notext"></a>
-                            </div>
-                        </fieldset>
-                    </li>
-                    <li>fwd 1</li>
-                    <li>bak 0.25</li>
                 </ul>
-                <input type="submit" id="programSubmit">Save</input>
+                <fieldset class="ui-grid-a center">
+                    <div class="ui-block-a">
+                        <button id="programCancel"
+                            class="ui-btn ui-btn-a ui-btn-inline ui-btn-icon-left ui-icon-delete ui-corner-all">Cancel</button>
+                    </div>
+                    <div class="ui-block-b">
+                        <button id="programSubmit"
+                            class="ui-btn ui-btn-b ui-btn-inline ui-btn-icon-left ui-icon-check ui-corner-all">Save</button>
+                    </div>
+                </fieldset>
             </form>
-
-            <form action="/logout" method="post" data-ajax="false">
-                <button type="submit" class="ui-btn ui-btn-corner-all">Sign Out</button>
-            </form>
-            <a href="#" onclick="google.accounts.id.prompt();">sign in?</a>
 
         </div><!-- /content -->
 
