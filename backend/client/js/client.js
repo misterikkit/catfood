@@ -86,16 +86,19 @@ function fmtTime(t) {
 
 function handleError(err) {
     console.error(err);
-    if (err.status === 403) {
-        $('div[data-role="popup"]').popup('close')
-        // Delay is needed for the popup to open
-        window.setTimeout(() => { $('#forbidden').delay(50).popup('open'); }, 50);
+    // close all popups so we can pop up an error
+    $('div[data-role="popup"]').popup('close')
+    let popupID = '#uhoh';
+    switch (err.status) {
+        case 401:
+            popupID = '#unauthorized'
+            break;
+        case 403:
+            popupID = '#forbidden';
+            break;
     }
-    if (err.status === 401) {
-        $('div[data-role="popup"]').popup('close')
-        // Delay is needed for the popup to open
-        window.setTimeout(() => { $('#unauthorized').delay(50).popup('open'); }, 50);
-    }
+    // Delay is needed for the popup to open
+    setTimeout(() => { $(popupID).popup('open'); }, 50);
 }
 
 function editScheduleStart(e) {
