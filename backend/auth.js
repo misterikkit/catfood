@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { OAuth2Client } = require('google-auth-library');
-
+// add timestamp to logs.
+require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 const config = require('./config');
 
 /**

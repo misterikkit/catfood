@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const morgan = require('morgan');
+// add timestamp to logs.
+require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
 const auth = require('./auth');
 const authHandlers = require('./handle-auth');

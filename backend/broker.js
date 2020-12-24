@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
-
+// add timestamp to logs.
+require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 const config = require('./config');
 
 class Broker extends EventEmitter {
