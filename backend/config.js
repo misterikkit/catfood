@@ -40,14 +40,14 @@ function MutateConfig(fn) {
                 reject(err);
                 return;
             }
-            if (!'schedule' in entity) {
+            if (!('schedule' in entity)) {
                 entity.schedule = [];
             }
             if (!Array.isArray(entity.schedule)) {
                 entity.schedule = [];
             }
 
-            if (!'program' in entity) {
+            if (!('program' in entity)) {
                 entity.program = [];
             }
             if (!Array.isArray(entity.program)) {
