@@ -4,7 +4,7 @@ set -x
 
 . $HOME/catfood.env
 TARGET="$DEVICE_TARGET"
-VERSION="$(git describe --always --dirty)"
+VERSION="$(git describe --tags --always --dirty)"
 
 cd $(dirname $0)
 
