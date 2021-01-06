@@ -4,7 +4,7 @@ source /home/pi/catfood.env
 # Device seems to need some uptime before gpio works.
 while true; do
     upSeconds=$(cat /proc/uptime | cut -d'.' -f1)
-    if [[ "$upSeconds" -gt 60 ]]; then
+    if [[ "$upSeconds" -gt 120 ]]; then
         break
     fi
     sleep 1
