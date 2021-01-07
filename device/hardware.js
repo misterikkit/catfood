@@ -1,6 +1,6 @@
 const events = require('events');
 const rpio = require('rpio');
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 const timers = require('timers');
 // add timestamp to logs.
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
@@ -28,10 +28,19 @@ const eventEmitter = new events.EventEmitter();
 function setup() {
   // Subprocess to set PWM mark:space mode because it isn't in the API.
   const setms = spawn('gpio', ['pwm-ms']);
-  rpio.open(config.pin, rpio.PWM);
-  rpio.pwmSetClockDivider(config.clockDivider);
-  rpio.pwmSetRange(config.pin, config.range);
-  stop();
+  setms.stdout.on('data', (data) => {
+    console.log(`gpio stdout: ${data}`);
+  });
+  setms.stderr.on('data', (data) => {
+    console.log(`gpio stderr: ${data}`);
+  });
+  setms.on('close', (code) => {
+    console.log(`gpio exit code: ${code}`);
+    rpio.open(config.pin, rpio.PWM);
+    rpio.pwmSetClockDivider(config.clockDivider);
+    rpio.pwmSetRange(config.pin, config.range);
+    stop();
+  });
 }
 
 function forward() {
