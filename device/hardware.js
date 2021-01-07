@@ -82,7 +82,11 @@ function run(sequence) {
 
 eventEmitter.on('dispense', () => {
   console.log('Dispensing product');
-  run(config.program);
+  setup()
+    .then(() => {
+      run(config.program);
+    })
+    .catch(console.error);
 });
 
 module.exports.setup = setup;
