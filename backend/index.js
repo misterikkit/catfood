@@ -47,7 +47,18 @@ app.ws('/device', (ws) => { brk.AddDeviceSocket(ws); });
 configHandlers.SetUp(app, brk);
 authHandlers.SetUp(app);
 
-app.post('/feedcatnow', (req, res) => { brk.emit('feedCatNow'); res.send('ok') });
+// Simple rate limiter for manual feeding.
+let lastManualFeed = Date.now();
+const minFeedInterval = 10 * 1000; // 10 seconds
+app.post('/feedcatnow', (req, res) => {
+    const now = Date.now();
+    if ((now - lastManualFeed) < minFeedInterval) {
+        res.sendStatus(429);
+        return;
+    }
+    lastManualFeed = now;
+    brk.emit('feedCatNow'); res.send('ok')
+});
 
 app.listen(port, () => {
     console.log(`Catfood backend listening at http://localhost:${port}`)
