@@ -26,20 +26,24 @@ const config = {
 const eventEmitter = new events.EventEmitter();
 
 function setup() {
-  // Subprocess to set PWM mark:space mode because it isn't in the API.
-  const setms = spawn('gpio', ['pwm-ms']);
-  setms.stdout.on('data', (data) => {
-    console.log(`gpio stdout: ${data}`);
-  });
-  setms.stderr.on('data', (data) => {
-    console.log(`gpio stderr: ${data}`);
-  });
-  setms.on('close', (code) => {
-    console.log(`gpio exit code: ${code}`);
-    rpio.open(config.pin, rpio.PWM);
-    rpio.pwmSetClockDivider(config.clockDivider);
-    rpio.pwmSetRange(config.pin, config.range);
-    stop();
+  return new Promise((resolve, reject) => {
+    // Subprocess to set PWM mark:space mode because it isn't in the API.
+    const setms = spawn('gpio', ['pwm-ms']);
+    setms.stdout.on('data', (data) => {
+      console.log(`gpio stdout: ${data}`);
+    });
+    setms.stderr.on('data', (data) => {
+      console.log(`gpio stderr: ${data}`);
+    });
+    setms.on('close', (code) => {
+      console.log(`gpio exit code: ${code}`);
+      if (code !== 0) { return reject(`gpio exited with ${code}`); }
+      rpio.open(config.pin, rpio.PWM);
+      rpio.pwmSetClockDivider(config.clockDivider);
+      rpio.pwmSetRange(config.pin, config.range);
+      stop();
+      resolve();
+    });
   });
 }
 

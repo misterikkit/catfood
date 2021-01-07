@@ -13,7 +13,7 @@ const events = require('events');
 // add timestamp to logs.
 require('log-timestamp')(() => new Date().toLocaleString() + ' %s');
 
-hardware.setup();
+const hw = hardware.setup();
 
 // Set up scheduler with last known config.
 const sched = new scheduler.Scheduler(hardware.dispense);
@@ -35,7 +35,9 @@ emitter.on('config', (cfg) => {
 emitter.on('feedNow', hardware.dispense);
 cloud.Connect(emitter);
 
-console.log('catfood startup complete');
+hw.then(() => {
+    console.log('catfood startup complete');
+}).catch(console.error);
 
 
 function convertProgram(prog) {
