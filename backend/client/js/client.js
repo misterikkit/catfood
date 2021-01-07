@@ -95,6 +95,9 @@ function handleError(err) {
         case 403:
             popupID = '#forbidden';
             break;
+        case 429:
+            popupID = '#ratelimit';
+            break;
     }
     // If needed, close the current popup and wait for its transition.
     if ($.mobile.popup.active) {
