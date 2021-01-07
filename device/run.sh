@@ -2,13 +2,10 @@
 
 source /home/pi/catfood.env
 # Device seems to need some uptime before gpio works.
-while true; do
-    upSeconds=$(cat /proc/uptime | cut -d'.' -f1)
-    if [[ "$upSeconds" -gt 120 ]]; then
-        break
-    fi
-    sleep 1
-done
+# TODO: restarting the pm2 process will hit this 1-minute sleep each time,
+# which is painful during dev. Change this to a conditional sleep. (However, when
+# it was a conditional sleep, GPIO didn't work after reboot.)
+sleep 1m
 uptime -p
 cd $(dirname $0)
 source ../.nvm/nvm.sh
