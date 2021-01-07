@@ -36,7 +36,6 @@ function setup() {
       console.log(`gpio stderr: ${data}`);
     });
     setms.on('close', (code) => {
-      console.log(`gpio exit code: ${code}`);
       if (code !== 0) { return reject(`gpio exited with ${code}`); }
       rpio.open(config.pin, rpio.PWM);
       rpio.pwmSetClockDivider(config.clockDivider);
